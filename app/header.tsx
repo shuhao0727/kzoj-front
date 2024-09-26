@@ -38,9 +38,9 @@ const appNavigationItems: NavigationItem[] = [
 ];
 
 const userNavigationItems: NavigationItem[] = [
-  { name: "我的主页", href: "/profile" },
-  { name: "我的提交", href: "/submissions" },
-  { name: "我的设置", href: "/settings" },
+  { name: "我的主页", href: "/user/profile" },
+  { name: "我的提交", href: "/user/submissions" },
+  { name: "我的设置", href: "/user/settings" },
   { name: "后台管理", href: "/admin" },
   { name: "退出登录", href: "#" },
 ];
