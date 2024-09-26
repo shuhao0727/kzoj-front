@@ -45,14 +45,6 @@ const Discuss = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newCategory, setNewCategory] = useState<string>("");
 
-  // 用于存储分类是否处于编辑模式
-  const [editState, setEditState] = useState<Record<string, boolean>>(
-    categories.reduce((acc, category) => {
-      acc[category] = false;
-      return acc;
-    }, {} as Record<string, boolean>)
-  );
-
   const handleChangeCategory = useCallback(
     (index: number, newValue: string) => {
       const updatedCategories = [...categories];

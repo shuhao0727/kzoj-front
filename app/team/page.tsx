@@ -32,7 +32,7 @@ const teamData: {
 const TeamList = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("全部");
-  const [myTeams, setMyTeams] = useState<boolean>(false);
+  const [myTeams] = useState<boolean>(false);
 
   const filteredTeams = useMemo(
     () =>
@@ -43,7 +43,7 @@ const TeamList = () => {
           team.name.includes(searchTerm)
         );
       }),
-    [teamData, searchTerm, selectedType, myTeams]
+    [searchTerm, selectedType, myTeams]
   );
 
   return (
