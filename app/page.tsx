@@ -1,101 +1,221 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import "chart.js/auto";
+import Link from "next/link";
+import { Line } from "react-chartjs-2";
+
+const getLast7Days = () => {
+  const dates = [];
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    dates.push(`${date.getMonth() + 1}/${date.getDate()}`);
+  }
+  return dates;
+};
+
+type NewsItem = {
+  title: string;
+  date: string;
+  author: string;
+};
+
+type Announcement = {
+  title: string;
+  date: string;
+  author: string;
+};
+
+type LinkItem = {
+  name: string;
+  href: string;
+};
+
+const newsList: NewsItem[] = [
+  { title: "2024年CSP认证新闻", date: "2024-09-25", author: "Admin" },
+  { title: "2023年NOIP资格赛新闻", date: "2023-12-17", author: "Admin" },
+  {
+    title: "提醒：2023年NOIP复赛新闻",
+    date: "2023-10-11",
+    author: "Admin",
+  },
+];
+
+const announcements: Announcement[] = [
+  { title: "安全须知", date: "2024-09-24", author: "root" },
+  { title: "2023年NOIP资格赛监测公告", date: "2023-12-17", author: "root" },
+  {
+    title: "提醒：2023年NOIP复赛即将到来",
+    date: "2023-10-11",
+    author: "root",
+  },
+];
+
+const links: LinkItem[] = [
+  { name: "Google", href: "https://www.google.com" },
+  { name: "GitHub", href: "https://github.com" },
+  { name: "LeetCode", href: "https://leetcode.com" },
+];
+
+const leaderboard: { user: string; submissions: number }[] = [];
+
+const submissions = {
+  labels: getLast7Days(),
+  datasets: [
+    {
+      label: "通过数",
+      data: [12, 19, 3, 5, 2, 3, 7],
+      borderColor: "rgba(144, 238, 144, 1)",
+      backgroundColor: "rgba(144, 238, 144, 0.2)",
+      fill: true,
+      tension: 0.4,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      borderWidth: 2,
+    },
+    {
+      label: "提交总数",
+      data: [20, 25, 10, 12, 8, 10, 15],
+      borderColor: "rgba(173, 216, 230, 1)",
+      backgroundColor: "rgba(173, 216, 230, 0.2)",
+      fill: true,
+      tension: 0.4,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      borderWidth: 2,
+    },
+  ],
+};
+
+const countdown: Record<string, number> = {
+  csp: 31,
+  noip: 66,
+};
+
+const Home = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="container mx-auto p-6 space-y-12 bg-gray-50 rounded-lg shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="col-span-2">
+          {/* 新闻板块 */}
+          <div className="bg-white hover:bg-gray-100 rounded-lg shadow-lg p-8 mb-8 transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-blue-600 mb-4">新闻</h2>
+            <ul>
+              {newsList.map((news, index) => (
+                <li key={index} className="mb-2">
+                  {news.title} - {news.date} - {news.author}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          {/* 公告板块 */}
+          <div className="bg-white hover:bg-gray-100 rounded-lg shadow-lg p-8 mb-8 transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-blue-600 mb-4">公告</h2>
+            <ul>
+              {announcements.map((announcement, index) => (
+                <li key={index} className="mb-2">
+                  {announcement.title} - {announcement.date} -{" "}
+                  {announcement.author}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* 最近一周提交统计 */}
+          <div className="bg-white hover:bg-gray-100 rounded-lg shadow-lg p-8 mb-8 transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-blue-600 mb-4">
+              最近一周提交统计
+            </h2>
+            <div className="h-64">
+              <Line
+                data={submissions}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: {
+                      beginAtZero: true,
+                    },
+                    x: {
+                      ticks: {
+                        autoSkip: false,
+                      },
+                    },
+                  },
+                  plugins: {
+                    tooltip: {
+                      enabled: true,
+                    },
+                    legend: {
+                      labels: {
+                        usePointStyle: false, // 禁用点样式，显示线段
+                      },
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="col-span-1">
+          {/* 倒计时 */}
+          <div className="bg-white hover:bg-gray-100 rounded-lg shadow-lg p-8 mb-8 transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-blue-600 mb-4">倒计时</h2>
+            <p>
+              2024年CSP一轮认证倒计时: <strong>{countdown.csp}天</strong>
+            </p>
+            <p>
+              2024年NOIP倒计时: <strong>{countdown.noip}天</strong>
+            </p>
+          </div>
+
+          {/* 最近一周通过题目榜 */}
+          <div className="bg-white hover:bg-gray-100 rounded-lg shadow-lg p-8 mb-8 transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-blue-600 mb-4">
+              最近一周通过题目榜
+            </h2>
+            <table className="table-auto w-full">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2 text-left">序号</th>
+                  <th className="px-4 py-2 text-left">用户名</th>
+                  <th className="px-4 py-2 text-left">通过数</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leaderboard.slice(0, 10).map((user, index) => (
+                  <tr key={index} className="border-b">
+                    <td className="px-4 py-2">{index + 1}</td>
+                    <td className="px-4 py-2">{user.user}</td>
+                    <td className="px-4 py-2">{user.submissions}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* 友情链接 */}
+          <div className="bg-white hover:bg-gray-100 rounded-lg shadow-lg p-8 transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-blue-600 mb-4">友情链接</h2>
+            <ul>
+              {links.map((link, index) => (
+                <li key={index} className="mb-2">
+                  <Link
+                    href={link.href}
+                    className="text-blue-500 hover:underline"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Home;
