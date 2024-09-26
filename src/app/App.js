@@ -10,7 +10,7 @@ import Train from './train/Train';
 import Ranking from './ranking/Ranking';
 import Discuss from './discuss/Discuss';
 import Team from './team/Team';
-import Others from './others/Others';
+
 import Review from './review/Review';
 
 // 新增引入我的页面以及后台管理页面
@@ -36,7 +36,7 @@ const navigationItems = [
   { name: '排名', href: '/ranking', key: 'ranking' },
   { name: '讨论', href: '/discuss', key: 'discuss' },
   { name: '团队', href: '/team', key: 'team' },
-  { name: '其他', href: '/others', key: 'others' },
+  
 ];
 
 const userNavigation = [
@@ -211,7 +211,7 @@ export default function App() {
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/discuss" element={<Discuss />} />
             <Route path="/team" element={<Team />} />
-            <Route path="/others" element={<Others />} />
+            
             {/* 新增的路由 */}
             <Route path="/profile" element={<MyProfile />} />
             <Route path="/submissions" element={<MySubmissions />} />

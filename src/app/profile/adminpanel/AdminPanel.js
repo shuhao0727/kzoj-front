@@ -18,13 +18,8 @@ import TagManagement from './ProblemManagement/TagManagement';
 import TeamProblemApproval from './ProblemManagement/TeamProblemApproval';
 import CategoryManagement from './TrainingManagement/CategoryManagement';
 import TrainingList from './TrainingManagement/TrainingList';
-import Dashboard from './Dashboard'; // 仪表盘组件
 
 const navigation = [
-  {
-    name: '仪表盘',
-    component: <Dashboard />, // 直接显示仪表盘
-  },
   {
     name: '常用设置',
     children: [
@@ -70,7 +65,7 @@ const navigation = [
 export default function AdminPanel() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [openSections, setOpenSections] = useState({});  // 控制一级导航的展开/收起
-  const [activeComponent, setActiveComponent] = useState(<Dashboard />);  // 控制当前显示的组件，默认显示仪表盘
+  const [activeComponent, setActiveComponent] = useState(<UserManagement />);  // 默认显示“用户管理”
 
   // 切换一级导航的展开/收起
   const toggleSection = (section) => {
@@ -85,14 +80,9 @@ export default function AdminPanel() {
     setActiveComponent(component);  // 更新显示的组件
   };
 
-  // 直接切换到仪表盘内容
-  const handleDashboardClick = () => {
-    setActiveComponent(<Dashboard />);
-  };
-
   return (
     <>
-      <div className="flex h-screen">
+      <div className="flex h-screen overflow-hidden">
         {/* 侧边栏 */}
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -124,16 +114,7 @@ export default function AdminPanel() {
                   </div>
                   <nav className="flex flex-1 flex-col px-2">
                     <ul className="flex flex-col gap-y-7">
-                      {/* 仪表盘点击事件 */}
-                      <li>
-                        <button
-                          className="flex w-full text-left items-center text-sm font-semibold text-gray-200 hover:bg-gray-800 p-2 rounded-md"
-                          onClick={handleDashboardClick}
-                        >
-                          仪表盘
-                        </button>
-                      </li>
-                      {navigation.slice(1).map((section, index) => (
+                      {navigation.map((section, index) => (
                         <li key={index}>
                           <button
                             className="flex justify-between w-full text-left items-center text-sm font-semibold text-gray-200 hover:bg-gray-800 p-2 rounded-md"
@@ -181,7 +162,7 @@ export default function AdminPanel() {
                         as={Fragment}
                         enter="transition ease-out duration-100"
                         enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
+                        enterTo="opacity-100 scale-100"
                         leave="transition ease-in duration-75"
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
@@ -210,20 +191,11 @@ export default function AdminPanel() {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:flex lg:w-64 lg:flex-col bg-gray-900">
+        <div className="hidden lg:flex lg:w-64 lg:flex-col bg-gray-900 fixed top-0 left-0 h-screen">
           <div className="flex grow flex-col gap-y-5 overflow-y-auto px-4 py-6">
             <nav className="flex flex-1 flex-col px-2">
               <ul className="flex flex-col gap-y-7">
-                {/* 仪表盘点击事件 */}
-                <li>
-                  <button
-                    className="flex w-full text-left items-center text-sm font-semibold text-gray-200 hover:bg-gray-800 p-2 rounded-md"
-                    onClick={handleDashboardClick}
-                  >
-                    仪表盘
-                  </button>
-                </li>
-                {navigation.slice(1).map((section, index) => (
+                {navigation.map((section, index) => (
                   <li key={index}>
                     <button
                       className="flex justify-between w-full text-left items-center text-sm font-semibold text-gray-200 hover:bg-gray-800 p-2 rounded-md"
@@ -271,7 +243,7 @@ export default function AdminPanel() {
                   as={Fragment}
                   enter="transition ease-out duration-100"
                   enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
+                  enterTo="opacity-100 scale-100"
                   leave="transition ease-in duration-75"
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="transform opacity-0 scale-95"
@@ -297,8 +269,8 @@ export default function AdminPanel() {
         </div>
 
         {/* 右侧内容区域 */}
-        <div className="flex-1 p-10">
-          {activeComponent || <p className="text-gray-600">请选择一个二级导航</p>}
+        <div className="flex-1 overflow-y-auto p-10 ml-64"> {/* 设置为可滚动 */}
+          {activeComponent}
         </div>
       </div>
     </>
