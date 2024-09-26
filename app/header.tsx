@@ -12,6 +12,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useMemo, useState } from "react";
@@ -71,7 +72,7 @@ export const Header = () => {
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <img
+                    <Image
                       className="h-8 w-8"
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                       alt="Your Company"
@@ -115,7 +116,7 @@ export const Header = () => {
                         <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
-                          <img
+                          <Image
                             className="h-8 w-8 rounded-full"
                             src={user.avatar}
                             alt=""
@@ -136,9 +137,7 @@ export const Header = () => {
                             <MenuItem key={item.name}>
                               {({ active }) => (
                                 <Link
-                                  href={
-                                    item.name === "后台管理" ? "#" : item.href
-                                  }
+                                  href={item.href}
                                   target={
                                     item.name === "后台管理"
                                       ? "_blank"
