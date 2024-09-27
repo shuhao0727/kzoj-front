@@ -1,5 +1,5 @@
 "use client";
-
+// 导航栏框架
 import {
   Dialog,
   DialogPanel,
@@ -22,7 +22,7 @@ const navigation = [
   {
     name: "常用设置",
     children: [
-      { name: "用户管理", href: "/admin/user" },
+      { name: "用户管理", href: "/admin/settings/usermanagement" },
       { name: "公告管理", href: "/admin/announcement" },
       { name: "通知管理", href: "/admin/notification" },
     ],

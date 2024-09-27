@@ -7,6 +7,7 @@ import { Header } from "./header";
 export const metadata: Metadata = {
   title: "KZOJ",
   description: "江苏省昆山中学OJ系统",
+  
 };
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
