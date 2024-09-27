@@ -30,9 +30,9 @@ const navigation = [
   {
     name: "题目管理",
     children: [
-      { name: "题目列表", href: "/admin/problem" },
-      { name: "增加题目", href: "/admin/problem/add" },
-      { name: "标签管理", href: "/admin/problem/tag" },
+      { name: "题目列表", href: "/admin/problems/list" },
+      { name: "增加题目", href: "/admin/problems/add" },
+      { name: "标签管理", href: "/admin/problems/tag" },
     ],
   },
   {
