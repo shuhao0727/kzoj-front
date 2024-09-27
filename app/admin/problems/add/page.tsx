@@ -1,31 +1,79 @@
-'use client';
+"use client";
+import React, { useState } from 'react';
+import ProblemDetails from './components/ProblemDetails';
+import ProblemDescription from './components/ProblemDescription';
+import ProblemUpload from './components/ProblemUpload';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import ProblemForm from './components/ProblemForm';
+const ProblemAddPage = () => {
+  const [problemDetails, setProblemDetails] = useState({
+    displayId: '',
+    title: '',
+    description: '',
+    timeLimit: '1000', // 默认时间限制为1000ms
+    memoryLimit: '512', // 默认内存限制为512MB
+    difficulty: '未知',
+    tags: '',
+    type: 'public',  // 默认公开题目
+    testData: [{ input: '', output: '' }],
+  });
 
-const ProblemPage = () => {
-  const [initialData, setInitialData] = useState(null);
-  const searchParams = useSearchParams();
-  const problemId = searchParams.get('id'); // 获取路由参数，判断是修改还是新增
-
-  useEffect(() => {
-    if (problemId) {
-      // 假设通过 problemId 从后端获取题目数据
-      fetch(`/api/problems/${problemId}`)
-        .then((res) => res.json())
-        .then((data) => setInitialData(data));
+  // 处理表单变化
+  const handleChange = (e, field, index = null) => {
+    if (index !== null) {
+      const updatedTestData = [...problemDetails.testData];
+      updatedTestData[index][field] = e.target.value;
+      setProblemDetails({ ...problemDetails, testData: updatedTestData });
+    } else {
+      setProblemDetails({ ...problemDetails, [field]: e.target.value });
     }
-  }, [problemId]);
+  };
+
+  // 添加新的测试数据
+  const addTestData = () => {
+    setProblemDetails({
+      ...problemDetails,
+      testData: [...problemDetails.testData, { input: '', output: '' }],
+    });
+  };
+
+  // 删除测试数据
+  const removeTestData = (index) => {
+    const updatedTestData = problemDetails.testData.filter((_, i) => i !== index);
+    setProblemDetails({ ...problemDetails, testData: updatedTestData });
+  };
+
+  // 表单提交处理
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // 在这里处理表单提交逻辑
+    console.log('提交题目数据：', problemDetails);
+  };
 
   return (
-    <div className="container mx-auto p-6 space-y-6 bg-gray-50 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold">
-        {problemId ? '修改题目' : '添加题目'}
-      </h2>
-      <ProblemForm initialData={initialData} />
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <form onSubmit={handleSubmit}>
+        <h1 className="text-2xl font-bold mb-6">添加题目</h1>
+
+        <ProblemDetails problemDetails={problemDetails} handleChange={handleChange} />
+        <ProblemDescription problemDetails={problemDetails} handleChange={handleChange} />
+        <ProblemUpload
+          problemDetails={problemDetails}
+          handleChange={handleChange}
+          addTestData={addTestData}
+          removeTestData={removeTestData}
+        />
+
+        <div className="flex justify-center mt-6">
+          <button
+            type="submit"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
+          >
+            提交题目
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default ProblemPage;
+export default ProblemAddPage;

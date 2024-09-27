@@ -1,13 +1,41 @@
 "use client";
-import React from "react";
-import TagManager from "./components/TagManager";
+import React, { useState } from 'react';
+import TagList from './components/TagList';
+import AddTagModal from './components/AddTagModal';
+import AddTagTypeModal from './components/AddTagTypeModal';
 
-const TagManagementPage = () => {
+const TagManager = () => {
+  const [isAddTagModalOpen, setAddTagModalOpen] = useState(false);
+  const [isAddTagTypeModalOpen, setAddTagTypeModalOpen] = useState(false);
+
   return (
-    <div className="container mx-auto p-6">
-      <TagManager />
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-2xl font-bold mb-4">标签管理</h1>
+      <div className="flex justify-between mb-4">
+        <button
+          onClick={() => setAddTagModalOpen(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
+          添加标签
+        </button>
+        <button
+          onClick={() => setAddTagTypeModalOpen(true)}
+          className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+        >
+          添加标签类型
+        </button>
+      </div>
+
+      <TagList />
+
+      {isAddTagModalOpen && (
+        <AddTagModal onClose={() => setAddTagModalOpen(false)} />
+      )}
+      {isAddTagTypeModalOpen && (
+        <AddTagTypeModal onClose={() => setAddTagTypeModalOpen(false)} />
+      )}
     </div>
   );
 };
 
-export default TagManagementPage;
+export default TagManager;
