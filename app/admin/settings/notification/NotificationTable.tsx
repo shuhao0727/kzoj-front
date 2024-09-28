@@ -21,45 +21,33 @@ const NotificationTable = () => {
       roleType: "所有用户",
     },
   ]);
-
+  
   const [isOpen, setIsOpen] = useState(false);
-  const [editData, setEditData] = useState(null); // 用于存储当前编辑的通知
   const [newNotification, setNewNotification] = useState({
     title: "",
     content: "",
-    roleType: "",
+    roleType: "", // 新增字段
   });
 
   const editorRef = useRef(null);
 
   // 打开创建/编辑通知的弹窗
-  const openModal = (notification = null) => {
-    setEditData(notification); // 如果传入了通知数据，则说明是编辑模式
-    setNewNotification(
-      notification || { title: "", content: "", roleType: "" }
-    );
+  const openModal = () => {
     setIsOpen(true);
   };
 
   // 关闭弹窗
   const closeModal = () => {
     setIsOpen(false);
-    setEditData(null);
   };
 
   // 保存通知
   const handleSave = () => {
-    if (editData) {
-      // 编辑模式，更新现有通知
-      const updatedNotifications = notifications.map((notif) =>
-        notif.id === editData.id ? { ...notif, ...newNotification } : notif
-      );
-      setNotifications(updatedNotifications);
-    } else {
-      // 创建新通知
-      const newNotif = { ...newNotification, id: notifications.length + 1 };
-      setNotifications([...notifications, newNotif]);
-    }
+    const url = "/api/notifications";
+    
+    // 模拟 POST 请求以保存新的通知数据
+    const newNotif = { ...newNotification, id: notifications.length + 1 };
+    setNotifications([...notifications, newNotif]);
     closeModal();
   };
 
@@ -78,7 +66,6 @@ const NotificationTable = () => {
             <th className="px-6 py-3 font-semibold">通知标题</th>
             <th className="px-6 py-3 font-semibold">通知内容</th>
             <th className="px-6 py-3 font-semibold">角色类型</th>
-            <th className="px-6 py-3 font-semibold">操作</th>
           </tr>
         </thead>
         <tbody className="text-sm text-gray-700">
@@ -87,14 +74,6 @@ const NotificationTable = () => {
               <td className="px-6 py-3">{notification.title}</td>
               <td className="px-6 py-3">{notification.content}</td>
               <td className="px-6 py-3">{notification.roleType}</td>
-              <td className="px-6 py-3">
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-                  onClick={() => openModal(notification)} // 打开编辑模式
-                >
-                  编辑
-                </button>
-              </td>
             </tr>
           ))}
         </tbody>
@@ -131,7 +110,7 @@ const NotificationTable = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    {editData ? "编辑通知" : "创建通知"}
+                    创建通知
                   </Dialog.Title>
 
                   <div className="mt-4">

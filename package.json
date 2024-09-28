@@ -13,6 +13,7 @@
     "@douyinfe/semi-ui": "^2.67.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",

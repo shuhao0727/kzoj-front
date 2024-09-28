@@ -7,9 +7,7 @@ const MdEditor = dynamic(() => import('react-markdown-editor-lite'), { ssr: fals
 const markdownIt = require('markdown-it')();
 
 const TestCaseUploader = () => {
-  const [testCases, setTestCases] = useState([
-    { input: '', output: '' }
-  ]); // 初始测试样例
+  const [testCases, setTestCases] = useState([{ input: '', output: '' }]); // 初始测试样例
   const [scores, setScores] = useState([]); // 分值数组
 
   // 添加测试样例
@@ -74,7 +72,7 @@ const TestCaseUploader = () => {
             <div>
               <button
                 onClick={() => removeTestCase(index)}
-                className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
+                className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition-all duration-200"
               >
                 删除
               </button>
@@ -97,19 +95,19 @@ const TestCaseUploader = () => {
         </div>
       )}
 
-      {/* 操作按钮：一行显示 */}
+      {/* 操作按钮 */}
       <div className="flex space-x-4 mt-6">
         <button
           onClick={addTestCase}
-          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all duration-200"
         >
-          添加测试样例
+          添加标签
         </button>
         <button
           onClick={handleUpload}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-all duration-200"
         >
-          上传测试数据
+          添加标签分类
         </button>
       </div>
     </div>

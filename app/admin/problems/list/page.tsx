@@ -1,18 +1,14 @@
+// ./app/admin/problems/list/page.tsx
 "use client";
-import React from "react";
-import ProblemTable from "./components/ProblemTable";
-import Pagination from "./components/Pagination";
-import SearchBar from "./components/SearchBar";
+import React from 'react';
+import ProblemListPage from './ProblemListPage'; // 确保路径正确
 
-const ProblemListPage = () => {
-  return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">题目列表</h1>
-      <SearchBar />
-      <ProblemTable />
-     
-    </div>
-  );
+const Page = () => {
+    return (
+        <div>
+            <ProblemListPage />
+        </div>
+    );
 };
 
-export default ProblemListPage;
+export default Page;
