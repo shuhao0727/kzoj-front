@@ -33,25 +33,30 @@ const navigation = [
       { name: "题目列表", href: "/admin/problems/list" },
       { name: "增加题目", href: "/admin/problems/add" },
       { name: "标签管理", href: "/admin/problems/tag" },
+      { name: "导入导出", href: "/admin/problems/import" },
     ],
   },
   {
     name: "训练管理",
     children: [
-      { name: "训练列表", href: "/admin/training" },
-      { name: "分类管理", href: "/admin/training/category" },
+      { name: "训练列表", href: "/admin/training/TrainingList" },
+      { name: "分类管理", href: "/admin/training/TrainingCategory" },
     ],
   },
   {
     name: "比赛管理",
     children: [
-      { name: "比赛列表", href: "/admin/contest" },
-      { name: "创建比赛", href: "/admin/contest/add" },
+      { name: "比赛列表", href: "/admin/contest/contestlist" },
+      
     ],
   },
   {
     name: "讨论管理",
     children: [{ name: "讨论列表", href: "/admin/discussion" }],
+  },
+  {
+    name: "文章管理",
+    children: [{ name: "文章管理", href: "/admin/word" }],
   },
 ];
 

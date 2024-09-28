@@ -1,18 +1,36 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { ChromePicker } from 'react-color'; // 更高级的颜色选择器
 
-const AddTagModal = ({ showAddTagModal, setShowAddTagModal, handleAddTag, cardTitles }) => {
+const AddTagModal = ({ showAddTagModal, setShowAddTagModal, handleAddTag, cardTitles, currentTag, handleEditTag, setCurrentTag }) => {
   const [tagName, setTagName] = useState('');
   const [tagColor, setTagColor] = useState('#1E90FF'); // 默认颜色为天蓝色
   const [tagType, setTagType] = useState('');
 
+  // 监听 currentTag 的变化，如果存在 currentTag，则为编辑模式
+  useEffect(() => {
+    if (currentTag) {
+      setTagName(currentTag.name);
+      setTagColor(currentTag.color);
+      setTagType(currentTag.type);
+    } else {
+      setTagName('');
+      setTagColor('#1E90FF');
+      setTagType('');
+    }
+  }, [currentTag]);
+
   const handleSave = () => {
     if (tagName && tagColor && tagType) {
-      handleAddTag({ name: tagName, color: tagColor, type: tagType });
+      if (currentTag) {
+        handleEditTag({ name: tagName, color: tagColor, type: tagType });
+      } else {
+        handleAddTag({ name: tagName, color: tagColor, type: tagType });
+      }
       setShowAddTagModal(false);
+      setCurrentTag(null); // 清除当前编辑的标签
     } else {
       alert("请填写所有字段");
     }
@@ -21,8 +39,11 @@ const AddTagModal = ({ showAddTagModal, setShowAddTagModal, handleAddTag, cardTi
   return (
     <Modal
       isOpen={showAddTagModal}
-      onRequestClose={() => setShowAddTagModal(false)}
-      contentLabel="添加标签"
+      onRequestClose={() => {
+        setShowAddTagModal(false);
+        setCurrentTag(null); // 清除编辑状态
+      }}
+      contentLabel="添加或编辑标签"
       style={{
         content: {
           top: '50%',
@@ -39,7 +60,7 @@ const AddTagModal = ({ showAddTagModal, setShowAddTagModal, handleAddTag, cardTi
         }
       }}
     >
-      <h2 className="text-xl font-bold mb-4 text-center">添加新标签</h2>
+      <h2 className="text-xl font-bold mb-4 text-center">{currentTag ? '编辑标签' : '添加新标签'}</h2>
       <div className="space-y-4">
         <input
           type="text"

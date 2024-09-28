@@ -1,20 +1,26 @@
-"use client"; // 确保这个组件是客户端组件
+"use client";
 
 import React from 'react';
 import AddTagModal from './AddTagModal';
 import AddTagTypeModal from './AddTagTypeModal';
+import EditTagTypeModal from './EditTagTypeModal'; // 新增的标签分类编辑弹窗
 
 const TagModals = ({
   showAddTagModal,
   setShowAddTagModal,
   showAddTagTypeModal,
   setShowAddTagTypeModal,
+  showEditTagTypeModal,
+  setShowEditTagTypeModal,
   handleAddTag,
   handleAddTagType,
+  handleEditTagType, // 新增的处理编辑标签分类
   cardTitles,
-  editTag,
   currentTag,
-  setCurrentTag
+  handleEditTag,
+  setCurrentTag,
+  editingTagType, // 当前正在编辑的标签分类
+  setEditingTagType, // 设置当前编辑的标签分类
 }) => {
   return (
     <>
@@ -24,8 +30,8 @@ const TagModals = ({
         setShowAddTagModal={setShowAddTagModal}
         handleAddTag={handleAddTag}
         cardTitles={cardTitles}
-        editTag={editTag}
         currentTag={currentTag}
+        handleEditTag={handleEditTag}
         setCurrentTag={setCurrentTag}
       />
 
@@ -34,6 +40,15 @@ const TagModals = ({
         showAddTagTypeModal={showAddTagTypeModal}
         setShowAddTagTypeModal={setShowAddTagTypeModal}
         handleAddTagType={handleAddTagType}
+      />
+
+      {/* 编辑标签分类的弹窗 */}
+      <EditTagTypeModal
+        showEditTagTypeModal={showEditTagTypeModal}
+        setShowEditTagTypeModal={setShowEditTagTypeModal}
+        editingTagType={editingTagType}
+        handleEditTagType={handleEditTagType}
+        setEditingTagType={setEditingTagType}
       />
     </>
   );
