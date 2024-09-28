@@ -35,6 +35,7 @@ const appNavigationItems: NavigationItem[] = [
   { name: "排名", href: "/ranking" },
   { name: "讨论", href: "/discuss" },
   { name: "团队", href: "/team" },
+  { name: "社区", href: "/word" },
 ];
 
 const userNavigationItems: NavigationItem[] = [

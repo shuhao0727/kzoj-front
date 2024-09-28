@@ -5,7 +5,7 @@ import AnnouncementTable from './AnnouncementTable';
 const Page = () => {
   return (
     <div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6 text-blue-600">公告管理</h1>
+      <h1 className="text-2xl font-bold mb-6">公告管理</h1>
 
       
      
