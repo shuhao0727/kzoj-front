@@ -1,48 +1,60 @@
 "use client";
-import React, { useState } from "react";
 
-const AddTagTypeModal = ({ onClose, addTagType }) => {
-  const [tagTypeName, setTagTypeName] = useState("");
+import React, { useState } from 'react';
+import Modal from 'react-modal';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addTagType(tagTypeName);
-    setTagTypeName("");
+const AddTagTypeModal = ({ showAddTagTypeModal, setShowAddTagTypeModal, handleAddTagType }) => {
+  const [tagType, setTagType] = useState('');
+
+  const handleSave = () => {
+    if (tagType) {
+      handleAddTagType(tagType);
+      setShowAddTagTypeModal(false);
+    } else {
+      alert("请填写标签分类名称");
+    }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-md shadow-lg w-80">
-        <h2 className="text-xl font-bold mb-4">添加标签类型</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">标签类型名称</label>
-            <input
-              type="text"
-              value={tagTypeName}
-              onChange={(e) => setTagTypeName(e.target.value)}
-              className="border border-gray-300 rounded-md p-2 w-full"
-              required
-            />
-          </div>
-          <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
-            >
-              取消
-            </button>
-            <button
-              type="submit"
-              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
-            >
-              添加
-            </button>
-          </div>
-        </form>
+    <Modal
+      isOpen={showAddTagTypeModal}
+      onRequestClose={() => setShowAddTagTypeModal(false)}
+      contentLabel="添加标签分类"
+      style={{
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          width: '250px',
+          height: '200px',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+        }
+      }}
+    >
+      <h2 className="text-xl font-bold mb-4 text-center">添加新标签分类</h2>
+      <div className="space-y-4">
+        <input
+          type="text"
+          placeholder="标签分类名称"
+          value={tagType}
+          onChange={(e) => setTagType(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-md"
+        />
       </div>
-    </div>
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={handleSave}
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md shadow-md"
+        >
+          保存
+        </button>
+      </div>
+    </Modal>
   );
 };
 

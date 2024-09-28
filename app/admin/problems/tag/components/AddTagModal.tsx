@@ -1,85 +1,79 @@
-import React, { useState } from "react";
+"use client";
 
-const AddTagModal = ({ onClose, addTag, tagTypes }) => {
-  const [tagName, setTagName] = useState("");
-  const [tagType, setTagType] = useState(tagTypes[0].name || ""); 
-  const [tagColor, setTagColor] = useState("#1f2937"); 
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import { ChromePicker } from 'react-color'; // 更高级的颜色选择器
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (tagName) {
-      const newTag = {
-        id: Math.random().toString(36).substr(2, 9),
-        name: tagName,
-        type: tagType,
-        color: tagColor,
-      };
-      addTag(newTag);
-      onClose();
+const AddTagModal = ({ showAddTagModal, setShowAddTagModal, handleAddTag, cardTitles }) => {
+  const [tagName, setTagName] = useState('');
+  const [tagColor, setTagColor] = useState('#1E90FF'); // 默认颜色为天蓝色
+  const [tagType, setTagType] = useState('');
+
+  const handleSave = () => {
+    if (tagName && tagColor && tagType) {
+      handleAddTag({ name: tagName, color: tagColor, type: tagType });
+      setShowAddTagModal(false);
+    } else {
+      alert("请填写所有字段");
     }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold mb-4">添加标签</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              标签名称
-            </label>
-            <input
-              type="text"
-              value={tagName}
-              onChange={(e) => setTagName(e.target.value)}
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              标签类型
-            </label>
-            <select
-              value={tagType}
-              onChange={(e) => setTagType(e.target.value)}
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            >
-              {tagTypes.map((type) => (
-                <option key={type.name} value={type.name}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              标签颜色
-            </label>
-            <input
-              type="color"
-              value={tagColor}
-              onChange={(e) => setTagColor(e.target.value)}
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm"
-            />
-          </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              添加
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="ml-4 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              取消
-            </button>
-          </div>
-        </form>
+    <Modal
+      isOpen={showAddTagModal}
+      onRequestClose={() => setShowAddTagModal(false)}
+      contentLabel="添加标签"
+      style={{
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          width: '300px',
+          height: '550px',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+        }
+      }}
+    >
+      <h2 className="text-xl font-bold mb-4 text-center">添加新标签</h2>
+      <div className="space-y-4">
+        <input
+          type="text"
+          placeholder="标签名称"
+          value={tagName}
+          onChange={(e) => setTagName(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-md"
+        />
+        <div className="mt-4">
+          <label className="text-sm font-medium text-gray-600 mb-2 block">选择标签颜色：</label>
+          <ChromePicker color={tagColor} onChangeComplete={(color) => setTagColor(color.hex)} />
+        </div>
+        <select
+          value={tagType}
+          onChange={(e) => setTagType(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-md mt-4"
+        >
+          <option value="">请选择标签分类</option>
+          {cardTitles.map((title, index) => (
+            <option key={index} value={title}>
+              {title}
+            </option>
+          ))}
+        </select>
       </div>
-    </div>
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={handleSave}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md"
+        >
+          保存标签
+        </button>
+      </div>
+    </Modal>
   );
 };
 
