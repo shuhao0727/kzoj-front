@@ -28,7 +28,7 @@ const problemData = {
 };
 
 const ProblemDetailPage = () => {
-  const { id } = useParams(); // 获取 URL 中的 id 参数
+  const { id } = useParams(); // 获取动态路由参数
 
   if (!id || !problemData[id]) {
     return <div>题目未找到</div>;
@@ -38,17 +38,13 @@ const ProblemDetailPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-8">
-      {/* 标题部分 */}
       <TitleSection title={problem.title} />
 
       <div className="flex space-x-8 mt-8">
-        {/* 左侧：题目描述部分 */}
         <div className="w-3/4">
           <DescriptionSection description={problem.description} />
           <SubmissionSection />
         </div>
-
-        {/* 右侧：相关信息部分 */}
         <div className="w-1/4">
           <RightInfoSection />
         </div>

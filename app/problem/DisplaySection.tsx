@@ -1,28 +1,39 @@
 "use client";
-
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { Pagination } from '@douyinfe/semi-ui'; // 使用 Semi UI 的分页组件
 
-// 模拟题目数据
-const initialProblems = [
-  { id: "P1000", title: "超级玛丽游戏", difficulty: "入门", source: "NOIP", algorithm: ["字符串"], status: "done", passRate: 0.75 },
-  { id: "P1001", title: "A+B Problem", difficulty: "入门", source: "NOIP", algorithm: ["模拟"], status: "done", passRate: 0.80 },
-  { id: "P1002", title: "[NOIP2002 普及组] 过河卒", difficulty: "普及-", source: "NOIP", algorithm: ["动态规划", "dp"], status: "pending", passRate: 0.60 },
-  { id: "P1003", title: "[NOIP2011 提高组] 辅地瓷", difficulty: "普及-", source: "NOIP", algorithm: ["模拟", "枚举"], status: "pending", passRate: 0.55 },
-];
+// 添加更多模拟题目数据
+const initialProblems = Array.from({ length: 150 }, (_, i) => ({
+  id: `P${1000 + i}`,
+  title: `题目标题 ${i + 1}`,
+  difficulty: i % 3 === 0 ? "入门" : i % 3 === 1 ? "普及-" : "提高",
+  source: i % 2 === 0 ? "NOIP" : "比赛",
+  algorithm: i % 2 === 0 ? ["动态规划", "dp"] : ["模拟", "枚举"],
+  status: i % 2 === 0 ? "done" : "pending",
+  passRate: Math.random(),
+}));
 
 const DisplaySection = () => {
   const [filteredProblems, setFilteredProblems] = useState(initialProblems);
   const [isSourceVisible, setIsSourceVisible] = useState(true); // 控制显示来源还是算法
+  const [currentPage, setCurrentPage] = useState(1);  // 当前页码
+  const [pageSize, setPageSize] = useState(30);  // 每页显示条数
 
   // 切换显示来源或算法
   const toggleSourceAlgorithm = () => {
     setIsSourceVisible(!isSourceVisible);
   };
 
+  // 根据当前页码和每页条数计算分页后的数据
+  const paginatedProblems = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return filteredProblems.slice(startIndex, startIndex + pageSize);
+  }, [currentPage, pageSize, filteredProblems]);
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 w-full">
-      <h2 className="text-xl font-bold text-gray-700 mb-4">题目列表</h2>
+      {/* 题目列表表格 */}
       <table className="w-full text-left table-auto">
         <thead>
           <tr className="border-b">
@@ -40,20 +51,17 @@ const DisplaySection = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredProblems.map((problem) => (
+          {paginatedProblems.map((problem) => (
             <tr key={problem.id} className="border-b">
               <td className="p-2 text-sm text-gray-500 w-12">
-                {problem.status === "done" ? (
-                  <span className="text-green-500">✔️</span>
-                ) : (
-                  <span className="text-gray-400">—</span>
-                )}
+                {problem.status === "done" ? <span className="text-green-500">✔️</span> : <span className="text-gray-400">—</span>}
               </td>
               <td className="p-2 text-left">{problem.id}</td>
               <td className="p-2 text-left">
-                {/* 点击链接后，打开新标签页 */}
-                <Link href={`/problemDetails/${problem.id}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                  {problem.title}
+                <Link href={`/problem/problemDetails/${problem.id}`} legacyBehavior>
+                  <a target="_blank" className="text-blue-500 hover:underline">
+                    {problem.title}
+                  </a>
                 </Link>
               </td>
               <td className="p-2 text-right">
@@ -70,15 +78,9 @@ const DisplaySection = () => {
                 )}
               </td>
               <td className="p-2 text-right">
-                <span
-                  className={`px-2 py-1 rounded text-white text-xs ${
-                    problem.difficulty === "入门"
-                      ? "bg-red-400"
-                      : problem.difficulty === "普及-"
-                      ? "bg-orange-400"
-                      : "bg-gray-400"
-                  }`}
-                >
+                <span className={`px-2 py-1 rounded text-white text-xs ${
+                  problem.difficulty === "入门" ? "bg-red-400" : problem.difficulty === "普及-" ? "bg-orange-400" : "bg-green-400"
+                }`}>
                   {problem.difficulty}
                 </span>
               </td>
@@ -94,6 +96,20 @@ const DisplaySection = () => {
           ))}
         </tbody>
       </table>
+      
+      {/* 右下角的分页控件 */}
+      <div className="flex justify-end mt-4">
+        <Pagination
+          total={filteredProblems.length}  // 总条目数
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={setPageSize}
+          pageSizeOpts={[30, 50, 100]}  // 可选每页条数
+          showSizeChanger
+          showQuickJumper
+        />
+      </div>
     </div>
   );
 };
