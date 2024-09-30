@@ -41,7 +41,7 @@ const DisplaySection = ({ searchTerm, selectedType, selectedStatus, currentPage,
             <th className="px-4 py-3 text-left">标题</th>
             <th className="px-4 py-3 text-left">赛制</th>
             <th className="px-4 py-3 text-left">状态</th>
-            <th className="px-4 py-3 text-left">起止时间 + 时长</th>
+            <th className="px-4 py-3 text-left">起止时间</th>
             <th className="px-4 py-3 text-left">题数</th>
             <th className="px-4 py-3 text-left">举办者</th>
           </tr>

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Box, Typography, Button, Divider } from "@mui/material";
 import Comments from "./Comments";
 
 // 示例讨论数据
@@ -23,7 +24,7 @@ const discussions = [
 ];
 
 const DiscussionDetailPage = ({ params }) => {
-  const { id } = params; // 获取路由中的 id 参数
+  const { id } = params;
 
   const discussion = discussions.find(
     (discussion) => discussion.id.toString() === id
@@ -40,57 +41,97 @@ const DiscussionDetailPage = ({ params }) => {
   };
 
   return (
-    <div className="flex h-screen">
-      <div
-        className={`${
-          isCollapsed ? "w-16" : "w-64"
-        } bg-gray-100 h-full p-4 transition-width duration-300`}
+    <Box
+      display="flex"
+      sx={{
+        height: "100vh",
+        paddingLeft: "10vw", // 保留页面两侧的全局留白
+        paddingRight: "10vw",
+      }}
+    >
+      {/* 左侧浮动目录 */}
+      <Box
+        sx={{
+          width: isCollapsed ? "40px" : "150px", // 目录宽度
+          backgroundColor: "lightgray",
+          padding: "10px 10px 20px", // 减少左右间距
+          position: "relative",
+          zIndex: 10,
+          textAlign: "left", // 目录内容左对齐
+          height: "auto", // 根据内容动态调整高度
+          overflowY: "auto", // 超出时出现滚动条
+          transition: "width 0.3s ease", // 增加过渡动画
+          marginRight: "10px", // 减少与正文的距离
+        }}
       >
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-bold mb-4">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6" mb={4} sx={{ fontSize: isCollapsed ? "12px" : "16px" }}>
             {isCollapsed ? "" : "目录"}
-          </h2>
-          <button
+          </Typography>
+
+          {/* 更明显的折叠按钮 */}
+          <Button
             onClick={toggleSidebar}
-            className="focus:outline-none p-2 hover:bg-gray-300 rounded-full"
+            sx={{
+              backgroundColor: "white",
+              borderRadius: "50%",
+              padding: "4px",
+              minWidth: "auto",
+              width: "30px",
+              height: "30px",
+              border: "1px solid gray",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              '&:hover': {
+                backgroundColor: "gray",
+                color: "white",
+              },
+            }}
           >
-            {isCollapsed ? (
-              <FaChevronRight size={20} />
-            ) : (
-              <FaChevronLeft size={20} />
-            )}
-          </button>
-        </div>
+            {isCollapsed ? <FaChevronRight size={16} /> : <FaChevronLeft size={16} />}
+          </Button>
+        </Box>
+
         {!isCollapsed && (
-          <ul className="space-y-2">
-            <li>
-              <a href="#section1" className="text-blue-500 hover:underline">
-                标题和简介
-              </a>
-            </li>
-            <li>
-              <a href="#section2" className="text-blue-500 hover:underline">
-                正文
-              </a>
-            </li>
-          </ul>
+          <Box sx={{ textAlign: "left" }}>
+            <Button fullWidth href="#section1" sx={{ justifyContent: "flex-start", fontSize: "14px" }}>
+              标题和简介
+            </Button>
+            <Button fullWidth href="#section2" sx={{ justifyContent: "flex-start", fontSize: "14px" }}>
+              正文
+            </Button>
+          </Box>
         )}
-      </div>
+      </Box>
 
-      <div className="flex-1 p-6 bg-white shadow-lg overflow-auto">
-        <div id="section1" className="mb-6">
-          <h1 className="text-4xl font-bold mb-4">{discussion.title}</h1>
-          <p className="text-gray-600">{discussion.description}</p>
-        </div>
+      {/* 右侧内容 */}
+      <Box
+        flex={1}
+        sx={{
+          padding: "40px 20px 40px", // 减少上下padding
+          overflowY: "auto", // 内容多时添加滚动条
+        }}
+      >
+        <Box id="section1" mb={4}>
+          <Typography variant="h4">{discussion.title}</Typography>
+          <Typography variant="body2" color="textSecondary" sx={{ marginTop: "10px" }}>
+            {discussion.description}
+          </Typography>
+        </Box>
 
-        <div id="section2" className="mt-10">
-          <h2 className="text-2xl font-semibold mb-4">正文内容</h2>
-          <p className="text-gray-700 leading-relaxed">{discussion.content}</p>
-        </div>
+        <Divider />
+
+        <Box id="section2" mt={4}>
+          <Typography variant="h5">正文内容</Typography>
+          <Typography variant="body1" sx={{ marginTop: "10px", lineHeight: 1.6 }}>
+            {discussion.content}
+          </Typography>
+        </Box>
 
         <Comments />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="zh_CN">
-      <body className="flex flex-col min-h-screen">
+    <html lang="zh_CN" className="h-full"> {/* 确保 html 高度为 100% */}
+      <body className="flex flex-col min-h-screen h-full">
         {/* 头部 */}
         <Header />
 

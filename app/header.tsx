@@ -17,7 +17,7 @@ import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useMemo, useState } from "react";
 
 type User = { name: string; email: string; avatar: string };
-type NavigationItem = { name: string; href: string };
+type NavigationItem = { name: string; href: string; target?: string };
 
 const user: User = {
   name: "Tom Cook",
@@ -34,13 +34,12 @@ const appNavigationItems: NavigationItem[] = [
   { name: "测评", href: "/judge" },
   { name: "排名", href: "/ranking" },
   { name: "讨论", href: "/discuss" },
-  
 ];
 
 const userNavigationItems: NavigationItem[] = [
-  { name: "我的主页", href: "/user/profile" },
-  { name: "我的设置", href: "/user/settings" },
-  { name: "后台管理", href: "/admin" },
+  { name: "我的主页", href: "/user/profile", target: "_blank" }, // 在新标签页打开
+  { name: "我的设置", href: "/user/settings", target: "_blank" }, // 在新标签页打开
+  { name: "后台管理", href: "/admin", target: "_blank" }, // 在新标签页打开
   { name: "退出登录", href: "#" },
 ];
 
@@ -136,11 +135,8 @@ export const Header = () => {
                               {({ active }) => (
                                 <Link
                                   href={item.href}
-                                  target={
-                                    item.name === "后台管理"
-                                      ? "_blank"
-                                      : undefined
-                                  }
+                                  target={item.target} // 这里使用 target 属性
+                                  rel={item.target === "_blank" ? "noopener noreferrer" : undefined} // 处理安全性
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
@@ -158,7 +154,7 @@ export const Header = () => {
                 </div>
                 <div className="-mr-2 flex md:hidden">
                   <DisclosureButton className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    <span className="absolute -inset-0.5" />
+                    <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -198,3 +194,5 @@ export const Header = () => {
     )
   );
 };
+
+export default Header;
