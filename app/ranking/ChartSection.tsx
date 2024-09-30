@@ -37,7 +37,7 @@ const chartData = {
       borderColor: "#B71C1C", // 边框颜色
       borderWidth: 2,
       borderRadius: 8,
-      barThickness: 40, // 调整柱子的宽度
+      barThickness: 50, // 增加柱子的宽度
     },
   ],
 };
