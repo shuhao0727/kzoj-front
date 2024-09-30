@@ -54,10 +54,7 @@ const navigation = [
     name: "讨论管理",
     children: [{ name: "讨论列表", href: "/admin/discussion" }],
   },
-  {
-    name: "文章管理",
-    children: [{ name: "文章管理", href: "/admin/word" }],
-  },
+ 
 ];
 
 export const Navigator = () => {

@@ -14,7 +14,7 @@ const ProblemDetails = ({ problemDetails, handleChange }) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-      <h2 className="text-xl font-bold mb-4">题目详情</h2>
+      
 
       {/* 题目描述 */}
       <div className="mb-6">

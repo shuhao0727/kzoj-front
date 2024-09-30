@@ -11,13 +11,12 @@ const initialUsers = [
 ];
 
 const UserManager = () => {
-  const [users, setUsers] = useState(initialUsers);  // 用户数据
-  const [searchQuery, setSearchQuery] = useState('');  // 搜索内容
-  const [currentPage, setCurrentPage] = useState(1);  // 当前页码
-  const [editingUser, setEditingUser] = useState(null);  // 当前正在编辑的用户
-  const [itemsPerPage, setItemsPerPage] = useState(10);  // 每页显示的用户数量
+  const [users, setUsers] = useState(initialUsers);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [editingUser, setEditingUser] = useState(null);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  // 搜索功能：通过用户名、姓名、学校、角色等多个字段进行搜索
   const filteredUsers = users.filter(user =>
     user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -26,15 +25,10 @@ const UserManager = () => {
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // 分页功能
   const paginatedUsers = filteredUsers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleSearch = (e) => setSearchQuery(e.target.value);
-
-  // 处理编辑用户
   const handleEditUser = (user) => setEditingUser(user);
-
-  // 保存编辑后的用户数据
   const handleSaveUser = (updatedUser) => {
     setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
     setEditingUser(null);
@@ -60,14 +54,14 @@ const UserManager = () => {
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
         <thead>
           <tr className="bg-gray-50 text-left text-sm rounded-t-lg">
-            <th className="px-6 py-3 font-semibold">用户名</th>
-            <th className="px-6 py-3 font-semibold">姓名</th>
-            <th className="px-6 py-3 font-semibold">学校</th>
-            <th className="px-6 py-3 font-semibold">角色</th>
-            <th className="px-6 py-3 font-semibold">操作</th>
+            <th className="px-6 py-2 font-semibold">用户名</th>
+            <th className="px-6 py-2 font-semibold">姓名</th>
+            <th className="px-6 py-2 font-semibold">学校</th>
+            <th className="px-6 py-2 font-semibold">角色</th>
+            <th className="px-6 py-2 font-semibold">操作</th>
           </tr>
         </thead>
-        <tbody className="text-sm text-gray-700 rounded-b-lg">
+        <tbody className="text-sm text-gray-700 rounded-b-lg" style={{ lineHeight: '1.2rem' }}> {/* 调整行高 */}
           {paginatedUsers.length > 0 ? (
             paginatedUsers.map(user => (
               <tr key={user.id} className="border-t hover:bg-gray-100 transition">

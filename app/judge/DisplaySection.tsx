@@ -45,46 +45,30 @@ const DisplaySection = ({ searchId, searchTitle, onlyMine }) => {
           </tr>
         </thead>
         <tbody>
-          {paginatedData
-            .filter(
-              (review) =>
-                (searchId === "" || review.id.toString().includes(searchId)) &&
-                (searchTitle === "" || review.title.includes(searchTitle)) &&
-                (!onlyMine || review.author === "2024222")
-            )
-            .map((review) => (
-              <tr
-                key={review.id}
-                className="border-b hover:bg-gray-50 transition-colors"
-              >
-                <td className="px-4 py-3">{review.id}</td>
-                {/* 去掉下划线的部分 */}
-                <td className="px-4 py-3 text-blue-500">
-                  {review.title}
-                </td>
-                <td
-                  className={`px-4 py-3 ${
-                    review.status === "Accepted"
-                      ? "text-green-500"
-                      : review.status === "Wrong Answer"
-                      ? "text-red-500"
-                      : "text-blue-500"
-                  }`}
-                >
-                  {review.status}
-                </td>
-                <td className="px-4 py-3">{review.score}</td>
-                <td className="px-4 py-3">{review.time}</td>
-                <td className="px-4 py-3">{review.codeLength}</td>
-                <td className="px-4 py-3 text-blue-500">{review.language}</td>
-                <td className="px-4 py-3 text-blue-500">{review.author}</td>
-                <td className="px-4 py-3">
-                  <button className="px-2 py-1 bg-blue-500 text-white text-sm rounded-md shadow-md hover:bg-blue-600">
-                    {review.action}
-                  </button>
-                </td>
-              </tr>
-            ))}
+          {paginatedData.map((review, index) => (
+            <tr
+              key={review.id}
+              className={`border-b hover:bg-gray-50 transition-colors ${
+                index % 2 === 0 ? "bg-gray-100" : ""
+              }`} // 使用斑马条纹效果
+            >
+              <td className="px-4 py-3">{review.id}</td>
+              <td className="px-4 py-3 text-blue-500">{review.title}</td>
+              <td className={`px-4 py-3 ${review.status === "Accepted" ? "text-green-500" : "text-red-500"}`}>
+                {review.status}
+              </td>
+              <td className="px-4 py-3">{review.score}</td>
+              <td className="px-4 py-3">{review.time}</td>
+              <td className="px-4 py-3">{review.codeLength}</td>
+              <td className="px-4 py-3 text-blue-500">{review.language}</td>
+              <td className="px-4 py-3 text-blue-500">{review.author}</td>
+              <td className="px-4 py-3">
+                <button className="px-2 py-1 bg-blue-500 text-white text-sm rounded-md shadow-md hover:bg-blue-600">
+                  {review.action} {/* 恢复“重新评测”按钮 */}
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 

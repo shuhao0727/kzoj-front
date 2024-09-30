@@ -52,7 +52,7 @@ const ProblemAddPage = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <form onSubmit={handleSubmit}>
-        <h1 className="text-2xl font-bold mb-6">添加题目</h1>
+        
 
         <ProblemDetails problemDetails={problemDetails} handleChange={handleChange} />
         <ProblemDescription problemDetails={problemDetails} handleChange={handleChange} />

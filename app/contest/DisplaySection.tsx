@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import { Pagination } from "@douyinfe/semi-ui";
+import Link from "next/link";
 
 // 模拟比赛数据
 const contestData = Array.from({ length: 50 }, (_, i) => ({
@@ -50,7 +51,10 @@ const DisplaySection = ({ searchTerm, selectedType, selectedStatus, currentPage,
           {paginatedData.map((contest) => (
             <tr key={contest.id} className="border-b hover:bg-gray-100 transition-colors duration-200">
               <td className="px-4 py-3 text-left">{contest.id}</td>
-              <td className="px-4 py-3 text-left text-blue-500 underline">{contest.title}</td>
+              <td className="px-4 py-3 text-left text-blue-500 underline">
+                {/* 修正后的 Link 组件 */}
+                <Link href={`/contest/${contest.id}`}>{contest.title}</Link>
+              </td>
               <td className="px-4 py-3 text-left">
                 <span className={`px-2 py-1 rounded-lg ${contest.type === "公开赛" ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`}>
                   {contest.type}

@@ -1,12 +1,13 @@
 "use client";
-import React from 'react';
+
+import React from "react";
 
 const ProblemDetails = ({ problemDetails, handleChange }) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">题目信息</h2>
+    <div className="bg-white p-6 rounded-lg shadow-lg mb-6 border border-gray-200">
+      
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         {/* 展示ID */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">题目展示ID</label>
@@ -14,7 +15,7 @@ const ProblemDetails = ({ problemDetails, handleChange }) => {
             type="text"
             value={problemDetails.displayId}
             onChange={(e) => handleChange(e, 'displayId')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
             placeholder="请输入题目展示ID"
           />
         </div>
@@ -26,13 +27,11 @@ const ProblemDetails = ({ problemDetails, handleChange }) => {
             type="text"
             value={problemDetails.title}
             onChange={(e) => handleChange(e, 'title')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
             placeholder="请输入题目名称"
           />
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* 时间限制 */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">时间限制 (ms)</label>
@@ -40,11 +39,13 @@ const ProblemDetails = ({ problemDetails, handleChange }) => {
             type="number"
             value={problemDetails.timeLimit || 1000}
             onChange={(e) => handleChange(e, 'timeLimit')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
             placeholder="1000"
           />
         </div>
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         {/* 内存限制 */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">内存限制 (MB)</label>
@@ -52,20 +53,18 @@ const ProblemDetails = ({ problemDetails, handleChange }) => {
             type="number"
             value={problemDetails.memoryLimit || 512}
             onChange={(e) => handleChange(e, 'memoryLimit')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
             placeholder="512"
           />
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* 难度 */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">难度</label>
           <select
             value={problemDetails.difficulty}
             onChange={(e) => handleChange(e, 'difficulty')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
           >
             <option value="未知">未知</option>
             <option value="入门">入门</option>
@@ -85,20 +84,20 @@ const ProblemDetails = ({ problemDetails, handleChange }) => {
             type="text"
             value={problemDetails.tags}
             onChange={(e) => handleChange(e, 'tags')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
             placeholder="请输入标签，多个标签用逗号分隔"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         {/* 题目类型 */}
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">题目类型</label>
           <select
             value={problemDetails.type}
             onChange={(e) => handleChange(e, 'type')}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition"
           >
             <option value="public">公开题目</option>
             <option value="private">隐藏题目</option>

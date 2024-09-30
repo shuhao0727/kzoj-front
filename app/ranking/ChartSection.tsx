@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   BarElement,
@@ -9,7 +10,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
 
 // 手动注册所需的组件
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
@@ -33,8 +33,8 @@ const chartData = {
     {
       label: "得分",
       data: rankingData.map((user) => user.score),
-      backgroundColor: "#FF6F61", // 条形图颜色
-      borderColor: "#FF6F61",
+      backgroundColor: "#C62828", // 设置为较深的红色
+      borderColor: "#B71C1C", // 边框颜色
       borderWidth: 2,
       borderRadius: 8,
       barThickness: 40, // 调整柱子的宽度
@@ -62,25 +62,21 @@ const chartOptions = {
     },
     tooltip: {
       backgroundColor: "#FFF", // 背景颜色
-      titleColor: "#FF6F61", // 标题颜色
+      titleColor: "#C62828", // 标题颜色
       bodyColor: "#333", // 内容颜色
-      borderColor: "#FF6F61",
+      borderColor: "#C62828",
       borderWidth: 1,
     },
-  },
-  // 添加背景样式的自定义插件
-  background: {
-    color: "rgba(180, 180, 180, 0.2)", // 背景颜色
   },
 };
 
 // 自定义插件来添加背景样式
 const backgroundPlugin = {
   id: "customCanvasBackgroundColor",
-  beforeDraw: (chart: any) => {
+  beforeDraw: (chart) => {
     const ctx = chart.canvas.getContext("2d");
     ctx.save();
-    ctx.fillStyle = chart.options.background.color || "rgba(180, 180, 180, 0.2)";
+    ctx.fillStyle = "rgba(255, 255, 255, 1)"; // 设置为白色背景
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   },
