@@ -11,8 +11,10 @@ const ChangeEmail = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // 模拟当前邮箱, 实际项目中从后端获取
+  const currentEmail = "currentemail@example.com";
+
   const handleGenerateCode = () => {
-    // 模拟生成验证码
     const newCode = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedCode(newCode);
     console.log("生成的验证码:", newCode);
@@ -33,7 +35,6 @@ const ChangeEmail = () => {
       return;
     }
 
-    // 模拟邮箱更改成功
     setSuccess(true);
     console.log("新邮箱: ", email);
 
@@ -43,11 +44,22 @@ const ChangeEmail = () => {
   };
 
   return (
-    <Box>
-      <Typography variant="h5" gutterBottom className="font-bold">
+    <Box sx={{ padding: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: "bold", fontSize: "1.5rem", mb: 2 }}>
         更改邮箱
       </Typography>
       <form onSubmit={handleSubmit}>
+        <Box mb={2}>
+          <TextField
+            label="当前邮箱"
+            type="email"
+            fullWidth
+            value={currentEmail}
+            disabled
+            InputProps={{ readOnly: true }}
+            sx={{ fontSize: "0.9rem", mb: 2 }}
+          />
+        </Box>
         <Box mb={2}>
           <TextField
             label="新邮箱"
@@ -56,6 +68,7 @@ const ChangeEmail = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            sx={{ fontSize: "0.9rem" }}
           />
         </Box>
         <Box mb={2}>
@@ -66,6 +79,7 @@ const ChangeEmail = () => {
             value={confirmEmail}
             onChange={(e) => setConfirmEmail(e.target.value)}
             required
+            sx={{ fontSize: "0.9rem" }}
           />
         </Box>
 
@@ -77,31 +91,39 @@ const ChangeEmail = () => {
             value={verificationCode}
             onChange={(e) => setVerificationCode(e.target.value)}
             required
+            sx={{ fontSize: "0.9rem" }}
           />
           <Button
             variant="outlined"
             color="primary"
             size="small"
             onClick={handleGenerateCode}
-            sx={{ ml: 2 }}
+            sx={{ ml: 2, fontSize: "0.9rem" }}
           >
             获取验证码
           </Button>
         </Box>
 
         {error && (
-          <Alert severity="error" className="mb-4">
+          <Alert severity="error" className="mb-4" sx={{ fontSize: "0.9rem" }}>
             {error}
           </Alert>
         )}
 
         {success && (
-          <Alert severity="success" className="mb-4">
+          <Alert severity="success" className="mb-4" sx={{ fontSize: "0.9rem" }}>
             邮箱更改成功！
           </Alert>
         )}
 
-        <Button variant="contained" color="primary" type="submit" size="small" fullWidth>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          size="small"
+          fullWidth
+          sx={{ fontSize: "0.9rem", height: 36 }}
+        >
           更改邮箱
         </Button>
       </form>

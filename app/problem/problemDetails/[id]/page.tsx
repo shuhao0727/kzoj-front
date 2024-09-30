@@ -1,56 +1,56 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import TitleSection from "../TitleSection";
-import DescriptionSection from "../DescriptionSection";
-import RightInfoSection from "../RightInfoSection";
-import SubmissionSection from "../SubmissionSection";
-import React from "react";
+import React, { useState } from "react";
+import Header from "./Header";
+import ProblemInfo from "./ProblemInfo";
+import ProblemDescription from "./ProblemDescription";
+import CodeEditorComponent from "./CodeEditor"; // 导入代码编辑器组件
+import ProviderInfo from "./ProviderInfo";
+import Tags from "./Tags";
+import Discussion from "./Discussion";
+import Recommendations from "./Recommendations";
 
-// 模拟题目详情数据
-const problemData = {
-  P1000: {
-    title: "超级玛丽游戏",
-    description: "帮助玛丽到达终点。",
-  },
-  P1001: {
-    title: "A+B Problem",
-    description: "计算两个整数的和。",
-  },
-  P1002: {
-    title: "[NOIP2002 普及组] 过河卒",
-    description: "帮助卒子安全过河。",
-  },
-  P1003: {
-    title: "[NOIP2011 提高组] 辅地瓷",
-    description: "解决复杂的瓷砖问题。",
-  },
-};
+const Page = () => {
+  const [isEditing, setIsEditing] = useState(false); // 用于控制左下部分是显示编辑器还是题目
 
-const ProblemDetailPage = () => {
-  const { id } = useParams(); // 获取动态路由参数
-
-  if (!id || !problemData[id]) {
-    return <div>题目未找到</div>;
-  }
-
-  const problem = problemData[id];
+  // 切换编辑器与题目视图
+  const toggleEditor = () => {
+    setIsEditing(!isEditing);
+  };
 
   return (
-    <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-8">
-      <TitleSection title={problem.title} />
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 bg-gray-50 rounded-lg shadow-md">
+      {/* 头部部分 */}
+      <Header isEditing={isEditing} onToggleEditor={toggleEditor} />
 
-      <div className="flex space-x-8 mt-8">
-        <div className="w-3/4">
-          <DescriptionSection description={problem.description} />
-          <SubmissionSection />
+      {/* 主体部分 */}
+      <div className="flex mt-6 space-x-6">
+        {/* 左侧部分 */}
+        <div className="flex-grow">
+          {/* 保持题目信息栏固定 */}
+          <ProblemInfo />
+          {/* 根据状态显示题目描述或编辑器 */}
+          {isEditing ? (
+            <CodeEditorComponent /> // 显示代码编辑器
+          ) : (
+            <ProblemDescription /> // 显示题目详细描述
+          )}
         </div>
-        <div className="w-1/4">
-          <RightInfoSection />
+
+        {/* 右侧部分 */}
+        <div className="w-1/3 space-y-4">
+          {/* 题目提供者、难度、历史最高分 */}
+          <ProviderInfo />
+          {/* 标签 */}
+          <Tags />
+          {/* 相关讨论 */}
+          <Discussion />
+          {/* 推荐题目 */}
+          <Recommendations />
         </div>
       </div>
     </div>
   );
 };
 
-export default ProblemDetailPage;
+export default Page;
