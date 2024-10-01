@@ -15,7 +15,7 @@ interface Competition {
   visible: boolean;
   startTime: string;
   endTime: string;
-  problems: number[];
+  problems: { id: number, title: string, difficulty: string, score: number }[]; // 修改为带有分值的结构
 }
 
 const CompetitionList = () => {
@@ -29,7 +29,10 @@ const CompetitionList = () => {
       visible: true,
       startTime: "2024-10-01 10:00",
       endTime: "2024-10-01 12:00",
-      problems: [1, 2],
+      problems: [
+        { id: 1, title: "模拟题目标题 1", difficulty: "中等", score: 100 },
+        { id: 2, title: "模拟题目标题 2", difficulty: "困难", score: 150 },
+      ],
     },
     {
       id: 4,
@@ -40,7 +43,7 @@ const CompetitionList = () => {
       visible: true,
       startTime: "2024-10-02 15:00",
       endTime: "2024-10-02 17:00",
-      problems: [3],
+      problems: [{ id: 3, title: "模拟题目标题 3", difficulty: "简单", score: 50 }],
     },
   ]);
 
@@ -117,7 +120,7 @@ const CompetitionList = () => {
     const termMatch =
       searchTerm === "" ||
       competition.title.includes(searchTerm) ||
-      competition.problems.some((problem) => `模拟题目标题 ${problem}`.includes(searchTerm));
+      competition.problems.some((problem) => problem.title.includes(searchTerm));
     return categoryMatch && termMatch;
   });
 
@@ -184,14 +187,16 @@ const CompetitionList = () => {
                       <th className="py-2 px-4 border-b text-left">题目ID</th>
                       <th className="py-2 px-4 border-b text-left">题目标题</th>
                       <th className="py-2 px-4 border-b text-left">难度</th>
+                      <th className="py-2 px-4 border-b text-left">分值</th> {/* 新增分值列 */}
                     </tr>
                   </thead>
                   <tbody>
-                    {competition.problems.map((problemId, index) => (
-                      <tr key={index}>
-                        <td className="py-2 px-4 border-b text-left">{problemId}</td>
-                        <td className="py-2 px-4 border-b text-left">模拟题目标题 {problemId}</td>
-                        <td className="py-2 px-4 border-b text-left">难度等级</td>
+                    {competition.problems.map((problem) => (
+                      <tr key={problem.id}>
+                        <td className="py-2 px-4 border-b text-left">{problem.id}</td>
+                        <td className="py-2 px-4 border-b text-left">{problem.title}</td>
+                        <td className="py-2 px-4 border-b text-left">{problem.difficulty}</td>
+                        <td className="py-2 px-4 border-b text-left">{problem.score}</td> {/* 显示题目的分值 */}
                       </tr>
                     ))}
                   </tbody>

@@ -3,46 +3,63 @@
 import React, { useState, useMemo } from "react";
 import { Table, Avatar, Pagination, Select } from "@douyinfe/semi-ui";
 
-// 模拟排名数据
-const rankingData = Array.from({ length: 50 }, (_, index) => ({
+// 模拟训练排名数据
+const trainingRankingData = Array.from({ length: 50 }, (_, index) => ({
   key: index + 1,
-  rank: index + 1,
-  username: `user${index + 1}`,
-  name: `选手 ${index + 1}`,
-  score: 300 - index * 5,
+  rank: index + 1, // 初始排名
+  username: `trainee${index + 1}`,
+  name: `学员 ${index + 1}`,
+  answers: Math.floor(Math.random() * 10) + 1,  // 模拟答题数
   t1: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
   t2: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
   t3: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
   t4: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
+  t5: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
+  t6: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
+  t7: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
+  t8: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
+  t9: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
+  t10: { score: Math.floor(Math.random() * 101), time: `${Math.floor(Math.random() * 50)}ms` },
   avatarBg: index % 2 === 0 ? "blue" : "green",
 }));
 
-const RankingList = () => {
+const TrainingRankingList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchTerm, setSearchTerm] = useState(""); // 追踪搜索输入内容
+  const [sorter, setSorter] = useState({ field: "answers", order: "desc" }); // 默认按照答题数降序排序
 
   // 根据搜索条件过滤数据
   const filteredData = useMemo(() => {
-    return rankingData.filter(
+    return trainingRankingData.filter(
       (user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||  // 根据用户名过滤
         user.name.toLowerCase().includes(searchTerm.toLowerCase())         // 根据姓名过滤
     );
   }, [searchTerm]);
 
+  // 根据答题数重新计算排名
+  const rankedData = useMemo(() => {
+    const sortedData = [...filteredData].sort((a, b) => b.answers - a.answers); // 按照答题数降序排序
+    return sortedData.map((item, index) => ({
+      ...item,
+      rank: index + 1, // 根据答题数生成新的排名
+    }));
+  }, [filteredData]);
+
   // 根据当前页面和页码大小来分页
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * pageSize;
-    return filteredData.slice(startIndex, startIndex + pageSize);
-  }, [currentPage, pageSize, filteredData]);
+    return rankedData.slice(startIndex, startIndex + pageSize);
+  }, [currentPage, pageSize, rankedData]);
 
   // 表格列设置
   const columns = [
     {
       title: "排名",
       dataIndex: "rank",
-      width: 60,
+      width: 70, // 调整宽度
+      fixed: 'left', // 固定列
       render: (rank) => {
         let medalColor = "";
         if (rank === 1) medalColor = "text-yellow-500"; // 金
@@ -55,7 +72,8 @@ const RankingList = () => {
     {
       title: "用户",
       dataIndex: "username",
-      width: 150,
+      width: 140, // 调整宽度
+      fixed: 'left', // 固定列
       render: (text, record) => (
         <div className="flex items-center">
           <Avatar size="small" color={record.avatarBg} style={{ marginRight: 4 }}>
@@ -68,74 +86,37 @@ const RankingList = () => {
     {
       title: "姓名",
       dataIndex: "name",
-      width: 120,
+      width: 100, // 缩小宽度
+      fixed: 'left', // 固定列
     },
     {
-      title: "总分",
-      dataIndex: "score",
+      title: "答题数",
+      dataIndex: "answers", // 答题数
+      width: 100, // 调整宽度
+      fixed: 'left', // 固定列
+      align: "center",
+      sorter: (a, b) => a.answers - b.answers, // 排序功能
+      defaultSortOrder: "descend", // 默认排序
+    },
+    // 动态生成 T1-T10 列
+    ...Array.from({ length: 10 }, (_, i) => ({
+      title: `T${i + 1}`,
+      dataIndex: `t${i + 1}`,
       width: 100,
       align: "center",
-      sorter: (a, b) => a.score - b.score, // 添加排序功能
-      render: (score, record) => (
-        <div className={score === 100 ? "bg-green-200" : "bg-blue-200"}>
-          {score} <span className="text-xs text-gray-400">({record.t1.time})</span>
+      sorter: (a, b) => a[`t${i + 1}`].score - b[`t${i + 1}`].score, // 添加排序功能
+      render: (t) => (
+        <div className={t.score === 100 ? "bg-green-200" : "bg-blue-200"}>
+          {t.score} <span className="text-xs text-gray-400">({t.time})</span>
         </div>
       ),
-    },
-    {
-      title: "T1",
-      dataIndex: "t1",
-      width: 100,
-      align: "center",
-      sorter: (a, b) => a.t1.score - b.t1.score, // 添加排序功能
-      render: (t1) => (
-        <div className={t1.score === 100 ? "bg-green-200" : "bg-blue-200"}>
-          {t1.score} <span className="text-xs text-gray-400">({t1.time})</span>
-        </div>
-      ),
-    },
-    {
-      title: "T2",
-      dataIndex: "t2",
-      width: 100,
-      align: "center",
-      sorter: (a, b) => a.t2.score - b.t2.score, // 添加排序功能
-      render: (t2) => (
-        <div className={t2.score === 100 ? "bg-green-200" : "bg-blue-200"}>
-          {t2.score} <span className="text-xs text-gray-400">({t2.time})</span>
-        </div>
-      ),
-    },
-    {
-      title: "T3",
-      dataIndex: "t3",
-      width: 100,
-      align: "center",
-      sorter: (a, b) => a.t3.score - b.t3.score, // 添加排序功能
-      render: (t3) => (
-        <div className={t3.score === 100 ? "bg-green-200" : "bg-blue-200"}>
-          {t3.score} <span className="text-xs text-gray-400">({t3.time})</span>
-        </div>
-      ),
-    },
-    {
-      title: "T4",
-      dataIndex: "t4",
-      width: 100,
-      align: "center",
-      sorter: (a, b) => a.t4.score - b.t4.score, // 添加排序功能
-      render: (t4) => (
-        <div className={t4.score === 100 ? "bg-green-200" : "bg-blue-200"}>
-          {t4.score} <span className="text-xs text-gray-400">({t4.time})</span>
-        </div>
-      ),
-    },
+    })),
   ];
 
   return (
     <div className="p-4 max-w-full mx-auto">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">详细排名表</h2>
+        <h2 className="text-lg font-semibold">训练排名列表</h2>
 
         {/* 搜索框集成在此处 */}
         <input
@@ -152,6 +133,8 @@ const RankingList = () => {
         pagination={false}
         bordered
         size="small"
+        scroll={{ x: 2000 }}  // 添加水平滚动条，适应宽度
+        onChange={(pagination, filters, sorter) => setSorter(sorter)}  // 设置排序器
         className="border border-gray-200 rounded-lg shadow"
         style={{ lineHeight: "1.5rem" }}
       />
@@ -170,7 +153,7 @@ const RankingList = () => {
         </Select>
 
         <Pagination
-          total={filteredData.length}
+          total={rankedData.length}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={setCurrentPage}
@@ -181,4 +164,4 @@ const RankingList = () => {
   );
 };
 
-export default RankingList;
+export default TrainingRankingList;

@@ -9,7 +9,7 @@ const SearchSection = ({ searchTerm, setSearchTerm }) => {
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}  // 更新搜索词
           placeholder="输入训练关键字..."
           className="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
         />

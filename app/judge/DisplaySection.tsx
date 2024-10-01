@@ -27,6 +27,12 @@ const DisplaySection = ({ searchId, searchTitle, onlyMine }) => {
     return judges.slice(startIndex, startIndex + pageSize);
   }, [currentPage, pageSize]);
 
+  // 重新评测功能
+  const handleRejudge = (id) => {
+    console.log(`Rejudging submission with ID: ${id}`);
+    // 在这里可以添加重新评测的逻辑
+  };
+
   return (
     <div className="w-full">
       {/* 表格部分 */}
@@ -63,9 +69,13 @@ const DisplaySection = ({ searchId, searchTitle, onlyMine }) => {
               <td className="px-4 py-3 text-blue-500">{review.language}</td>
               <td className="px-4 py-3 text-blue-500">{review.author}</td>
               <td className="px-4 py-3">
-                <button className="px-2 py-1 bg-blue-500 text-white text-sm rounded-md shadow-md hover:bg-blue-600">
-                  {review.action} {/* 恢复“重新评测”按钮 */}
-                </button>
+                {/* 将按钮替换为文本形式，但保持按钮功能 */}
+                <span
+                  className="text-blue-500 cursor-pointer hover:underline"
+                  onClick={() => handleRejudge(review.id)}
+                >
+                  {review.action}
+                </span>
               </td>
             </tr>
           ))}

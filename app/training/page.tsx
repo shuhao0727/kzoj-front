@@ -30,6 +30,9 @@ const TrainingPage = () => {
         pageSize={pageSize}
         setCurrentPage={setCurrentPage}
         setPageSize={setPageSize}
+        searchTerm={searchTerm}           // 传递搜索词
+        selectedCategory={selectedCategory}  // 传递选中的分类
+        selectedPrivilege={selectedPrivilege} // 传递选中的权限
       />
     </div>
   );

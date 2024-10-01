@@ -52,8 +52,10 @@ const DisplaySection = ({ searchTerm, selectedType, selectedStatus, currentPage,
             <tr key={contest.id} className="border-b hover:bg-gray-100 transition-colors duration-200">
               <td className="px-4 py-3 text-left">{contest.id}</td>
               <td className="px-4 py-3 text-left text-blue-500 underline">
-                {/* 修正后的 Link 组件 */}
-                <Link href={`/contest/${contest.id}`}>{contest.title}</Link>
+                {/* 使用 target="_blank" 和 rel="noopener noreferrer" */}
+                <Link href={`/contest/${contest.id}`} target="_blank" rel="noopener noreferrer">
+                  {contest.title}
+                </Link>
               </td>
               <td className="px-4 py-3 text-left">
                 <span className={`px-2 py-1 rounded-lg ${contest.type === "公开赛" ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`}>

@@ -64,7 +64,7 @@ const UserManager = () => {
             <th className="px-6 py-2 font-semibold">姓名</th>
             <th className="px-6 py-2 font-semibold">学校</th>
             <th className="px-6 py-2 font-semibold">角色</th>
-            <th className="px-6 py-2 font-semibold">创建时间</th> {/* 新增创建时间列 */}
+            <th className="px-6 py-2 font-semibold">注册时间</th> {/* 新增创建时间列 */}
             <th className="px-6 py-2 font-semibold">操作</th>
           </tr>
         </thead>
