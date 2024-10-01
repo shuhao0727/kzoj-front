@@ -2,53 +2,81 @@
 
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Editor } from "@toast-ui/react-editor"; 
+import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
 const NotificationTable = () => {
-  // 示例通知数据
   const [notifications, setNotifications] = useState([
     {
       id: 1,
       title: "系统维护通知",
       content: "系统将在今晚12点进行维护，预计维护时长为2小时。",
       roleType: "管理员",
+      date: "2023-10-01",
     },
     {
       id: 2,
       title: "新功能上线通知",
       content: "我们上线了全新的题目编辑器，欢迎大家使用并提出反馈。",
       roleType: "所有用户",
+      date: "2023-10-02",
     },
   ]);
-  
+
   const [isOpen, setIsOpen] = useState(false);
+  const [editNotification, setEditNotification] = useState(null); // 用于区分创建和编辑
   const [newNotification, setNewNotification] = useState({
     title: "",
     content: "",
-    roleType: "", // 新增字段
+    roleType: "",
+    date: "", // 新增字段：创建/修改时间
   });
 
   const editorRef = useRef(null);
 
   // 打开创建/编辑通知的弹窗
-  const openModal = () => {
+  const openModal = (notification = null) => {
+    if (notification) {
+      setEditNotification(notification);
+      setNewNotification(notification);
+    } else {
+      setNewNotification({
+        title: "",
+        content: "",
+        roleType: "",
+        date: new Date().toISOString().slice(0, 10), // 设置默认创建时间
+      });
+    }
     setIsOpen(true);
   };
 
   // 关闭弹窗
   const closeModal = () => {
     setIsOpen(false);
+    setEditNotification(null);
   };
 
-  // 保存通知
+  // 保存通知（新建或编辑）
   const handleSave = () => {
-    const url = "/api/notifications";
-    
-    // 模拟 POST 请求以保存新的通知数据
-    const newNotif = { ...newNotification, id: notifications.length + 1 };
-    setNotifications([...notifications, newNotif]);
+    const updatedNotification = { ...newNotification };
+    if (editNotification) {
+      // 编辑模式
+      setNotifications(
+        notifications.map((notif) =>
+          notif.id === editNotification.id ? updatedNotification : notif
+        )
+      );
+    } else {
+      // 创建模式
+      updatedNotification.id = notifications.length + 1;
+      setNotifications([...notifications, updatedNotification]);
+    }
     closeModal();
+  };
+
+  // 删除通知
+  const handleDelete = (id) => {
+    setNotifications(notifications.filter((notif) => notif.id !== id));
   };
 
   return (
@@ -66,6 +94,8 @@ const NotificationTable = () => {
             <th className="px-6 py-3 font-semibold">通知标题</th>
             <th className="px-6 py-3 font-semibold">通知内容</th>
             <th className="px-6 py-3 font-semibold">角色类型</th>
+            <th className="px-6 py-3 font-semibold">时间</th> {/* 新增时间列 */}
+            <th className="px-6 py-3 font-semibold">操作</th> {/* 新增操作列 */}
           </tr>
         </thead>
         <tbody className="text-sm text-gray-700">
@@ -74,6 +104,21 @@ const NotificationTable = () => {
               <td className="px-6 py-3">{notification.title}</td>
               <td className="px-6 py-3">{notification.content}</td>
               <td className="px-6 py-3">{notification.roleType}</td>
+              <td className="px-6 py-3">{notification.date}</td> {/* 显示时间 */}
+              <td className="px-6 py-3">
+                <span
+                  className="text-blue-500 cursor-pointer hover:underline mr-4"
+                  onClick={() => openModal(notification)}
+                >
+                  编辑
+                </span>
+                <span
+                  className="text-red-500 cursor-pointer hover:underline"
+                  onClick={() => handleDelete(notification.id)}
+                >
+                  删除
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -110,7 +155,7 @@ const NotificationTable = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    创建通知
+                    {editNotification ? "编辑通知" : "创建通知"}
                   </Dialog.Title>
 
                   <div className="mt-4">
@@ -166,6 +211,23 @@ const NotificationTable = () => {
                           setNewNotification({
                             ...newNotification,
                             roleType: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700">
+                        时间
+                      </label>
+                      <input
+                        type="date"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        value={newNotification.date}
+                        onChange={(e) =>
+                          setNewNotification({
+                            ...newNotification,
+                            date: e.target.value,
                           })
                         }
                       />

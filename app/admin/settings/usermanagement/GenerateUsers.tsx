@@ -92,7 +92,10 @@ const GenerateUsers: React.FC<GenerateUsersProps> = ({ users, setUsers }) => {
   return (
     <>
       {/* 生成用户按钮 */}
-      <button onClick={openModal} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md shadow">
+      <button
+        onClick={openModal}
+        className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:to-green-700 text-white px-5 py-2 rounded-lg shadow-lg transition duration-300 ease-in-out"
+      >
         生成新用户
       </button>
 
@@ -108,7 +111,7 @@ const GenerateUsers: React.FC<GenerateUsersProps> = ({ users, setUsers }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-30" />
+            <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-md" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -122,66 +125,66 @@ const GenerateUsers: React.FC<GenerateUsersProps> = ({ users, setUsers }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-8 text-left shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-semibold leading-6 text-gray-900"
+                    className="text-2xl font-semibold leading-6 text-gray-900 mb-6"
                   >
                     生成新用户
                   </Dialog.Title>
 
-                  <div className="mt-4">
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-base font-medium text-gray-700">
                         账号前缀
                       </label>
                       <input
                         type="text"
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-2 block w-full rounded-lg border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all"
                         value={prefix}
                         onChange={(e) => setPrefix(e.target.value)}
                       />
                     </div>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div>
+                      <label className="block text-base font-medium text-gray-700">
                         账号后缀
                       </label>
                       <input
                         type="text"
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-2 block w-full rounded-lg border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all"
                         value={suffix}
                         onChange={(e) => setSuffix(e.target.value)}
                       />
                     </div>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div>
+                      <label className="block text-base font-medium text-gray-700">
                         开始编号
                       </label>
                       <input
                         type="number"
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-2 block w-full rounded-lg border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all"
                         value={startNumber}
                         onChange={(e) => setStartNumber(Number(e.target.value))}
                       />
                     </div>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div>
+                      <label className="block text-base font-medium text-gray-700">
                         结束编号
                       </label>
                       <input
                         type="number"
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-2 block w-full rounded-lg border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all"
                         value={endNumber}
                         onChange={(e) => setEndNumber(Number(e.target.value))}
                       />
                     </div>
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div>
+                      <label className="block text-base font-medium text-gray-700">
                         密码长度
                       </label>
                       <input
                         type="number"
-                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-2 block w-full rounded-lg border-gray-300 p-3 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all"
                         value={passwordLength}
                         onChange={(e) => setPasswordLength(Number(e.target.value))}
                       />
@@ -191,17 +194,17 @@ const GenerateUsers: React.FC<GenerateUsersProps> = ({ users, setUsers }) => {
                     )}
                   </div>
 
-                  <div className="mt-6 flex justify-end">
+                  <div className="mt-8 flex justify-end space-x-4">
                     <button
                       type="button"
-                      className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md mr-2"
+                      className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg transition-all"
                       onClick={closeModal}
                     >
                       取消
                     </button>
                     <button
                       type="button"
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-all"
                       onClick={handleGenerateUsers}
                     >
                       生成

@@ -4,6 +4,22 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Editor } from "@toast-ui/react-editor"; 
 import "@toast-ui/editor/dist/toastui-editor.css";
 
+// Tailwind CSS 开关组件的自定义样式
+const ToggleSwitch = ({ checked, onChange }) => (
+  <div
+    onClick={() => onChange(!checked)}
+    className={`relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer transition-colors ${
+      checked ? "bg-blue-500" : "bg-gray-300"
+    }`}
+  >
+    <span
+      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+        checked ? "translate-x-6" : "translate-x-1"
+      }`}
+    />
+  </div>
+);
+
 const AnnouncementTable = ({ onAnnouncementsUpdate }) => {
   const [announcements, setAnnouncements] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -17,11 +33,38 @@ const AnnouncementTable = ({ onAnnouncementsUpdate }) => {
 
   const editorRef = useRef(null);
 
-  // Fetch existing announcements
+  // Fetch existing announcements with three example announcements
   useEffect(() => {
-    fetch("/api/announcements")
-      .then((res) => res.json())
-      .then((data) => setAnnouncements(data));
+    const exampleAnnouncements = [
+      {
+        id: 1,
+        title: "系统维护公告",
+        content: "由于系统维护，平台将在2023年10月10日 00:00 到 06:00 期间无法访问。",
+        startDate: "2023-10-10",
+        endDate: "2023-10-10",
+        author: "管理员",
+        visible: true,
+      },
+      {
+        id: 2,
+        title: "平台更新公告",
+        content: "我们即将在2023年11月推出一系列新功能，敬请期待。",
+        startDate: "2023-11-01",
+        endDate: "2023-11-30",
+        author: "管理员",
+        visible: true,
+      },
+      {
+        id: 3,
+        title: "用户满意度调查",
+        content: "请参与我们的满意度调查，帮助我们改进平台。",
+        startDate: "2023-09-15",
+        endDate: "2023-09-30",
+        author: "管理员",
+        visible: false,
+      },
+    ];
+    setAnnouncements(exampleAnnouncements);
   }, []);
 
   // 打开创建/编辑公告的弹窗
@@ -42,9 +85,7 @@ const AnnouncementTable = ({ onAnnouncementsUpdate }) => {
   // 保存公告
   const handleSave = () => {
     const method = editData ? "PUT" : "POST";
-    const url = editData
-      ? `/api/announcements`
-      : `/api/announcements`;
+    const url = editData ? `/api/announcements` : `/api/announcements`;
 
     fetch(url, {
       method,
@@ -57,9 +98,7 @@ const AnnouncementTable = ({ onAnnouncementsUpdate }) => {
       .then((data) => {
         if (editData) {
           setAnnouncements(
-            announcements.map((ann) =>
-              ann.id === editData.id ? data : ann
-            )
+            announcements.map((ann) => (ann.id === editData.id ? data : ann))
           );
         } else {
           setAnnouncements([...announcements, data]);
@@ -134,28 +173,25 @@ const AnnouncementTable = ({ onAnnouncementsUpdate }) => {
               <td className="px-6 py-3">{ann.endDate}</td>
               <td className="px-6 py-3">{ann.author}</td>
               <td className="px-6 py-3">
-                <label className="inline-flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={ann.visible}
-                    onChange={() => handleToggleVisibility(ann.id)}
-                    className="form-checkbox h-5 w-5 text-blue-600"
-                  />
-                </label>
+                <ToggleSwitch
+                  checked={ann.visible}
+                  onChange={() => handleToggleVisibility(ann.id)}
+                />
               </td>
               <td className="px-6 py-3">
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                {/* 将按钮替换为文字 */}
+                <span
+                  className="text-blue-500 cursor-pointer hover:underline mr-4"
                   onClick={() => openModal(ann)}
                 >
                   编辑
-                </button>
-                <button
-                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                </span>
+                <span
+                  className="text-red-500 cursor-pointer hover:underline"
                   onClick={() => handleDelete(ann.id)}
                 >
                   删除
-                </button>
+                </span>
               </td>
             </tr>
           ))}

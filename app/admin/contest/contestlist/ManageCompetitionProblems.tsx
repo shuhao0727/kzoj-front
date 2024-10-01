@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 
@@ -11,13 +9,15 @@ interface Problem {
   order: number;
 }
 
+// 定义初始题目数据
 const initialProblems: Problem[] = [
   { id: 1, displayId: "P1001", title: "二叉树遍历", difficulty: "中等", order: 1 },
   { id: 2, displayId: "P1002", title: "动态规划", difficulty: "困难", order: 2 },
   { id: 3, displayId: "P1003", title: "最短路径", difficulty: "简单", order: 3 },
 ];
 
-const ManageCompetitionProblems = ({ competition, closeModal, onSave }: { competition: any, closeModal: any, onSave: any }) => {
+const ManageCompetitionProblems = ({ competition, closeModal, onSave }) => {
+  // 使用定义好的 initialProblems 作为状态初始值
   const [problems, setProblems] = useState(initialProblems);
   const [filteredProblems, setFilteredProblems] = useState(problems);
   const [searchQuery, setSearchQuery] = useState('');
