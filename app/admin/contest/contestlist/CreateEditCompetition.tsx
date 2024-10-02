@@ -13,6 +13,8 @@ interface Competition {
   startTime: string;
   endTime: string;
   problems: number[];
+  organizer: string; // 举办者
+  password?: string;  // 密码 (私有比赛时)
 }
 
 interface Props {
@@ -27,6 +29,8 @@ const CreateEditCompetition: React.FC<Props> = ({ competition, onSave, closeModa
   const [startTime, setStartTime] = useState(competition?.startTime || '');
   const [endTime, setEndTime] = useState(competition?.endTime || '');
   const [access, setAccess] = useState(competition?.access || 'Private');
+  const [organizer, setOrganizer] = useState(competition?.organizer || '');
+  const [password, setPassword] = useState(competition?.password || ''); // 密码 (可选)
   const [categories, setCategories] = useState<string[]>(['算法比赛', '编程比赛', '数学比赛']); // 默认的比赛类别
   const [showAddCategoryDialog, setShowAddCategoryDialog] = useState(false);
   const [newCategory, setNewCategory] = useState('');
@@ -39,6 +43,8 @@ const CreateEditCompetition: React.FC<Props> = ({ competition, onSave, closeModa
       setStartTime(competition.startTime);
       setEndTime(competition.endTime);
       setAccess(competition.access);
+      setOrganizer(competition.organizer);
+      setPassword(competition.password || ''); // 预填充密码
     }
   }, [competition]);
 
@@ -51,6 +57,8 @@ const CreateEditCompetition: React.FC<Props> = ({ competition, onSave, closeModa
       startTime,
       endTime,
       access,
+      organizer,
+      password: access === 'Private' ? password : undefined,  // 如果是私有比赛，保存密码
     } as Competition;
 
     onSave(newCompetition);
@@ -88,7 +96,16 @@ const CreateEditCompetition: React.FC<Props> = ({ competition, onSave, closeModa
           fullWidth
           variant="outlined"
         />
-        
+
+        {/* 举办者 */}
+        <TextField
+          label="举办者"
+          value={organizer}
+          onChange={(e) => setOrganizer(e.target.value)}
+          fullWidth
+          variant="outlined"
+        />
+
         {/* 比赛类别 */}
         <FormControl fullWidth variant="outlined">
           <InputLabel>类别</InputLabel>
@@ -150,11 +167,27 @@ const CreateEditCompetition: React.FC<Props> = ({ competition, onSave, closeModa
         {/* 比赛权限 */}
         <FormControl fullWidth variant="outlined">
           <InputLabel>权限</InputLabel>
-          <Select value={access} onChange={(e) => setAccess(e.target.value)} label="权限">
+          <Select
+            value={access}
+            onChange={(e) => setAccess(e.target.value)}
+            label="权限"
+          >
             <MenuItem value="Private">Private</MenuItem>
             <MenuItem value="Public">Public</MenuItem>
           </Select>
         </FormControl>
+
+        {/* 私有比赛的密码输入框 */}
+        {access === 'Private' && (
+          <TextField
+            label="比赛密码"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            variant="outlined"
+          />
+        )}
 
         {/* 操作按钮 */}
         <div className="flex justify-end space-x-4">

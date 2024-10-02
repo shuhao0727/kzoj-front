@@ -50,49 +50,39 @@ const TrainingCategory = () => {
         </Button>
       </div>
 
-      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-        <thead>
-          <tr className="bg-gray-100 text-gray-700 text-left">
-            <th className="py-3 px-4 border-b">分类名称</th>
-            <th className="py-3 px-4 border-b">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.length > 0 ? (
-            categories.map((category) => (
-              <tr key={category.id} className="text-gray-700">
-                <td className="py-3 px-4 border-b">{category.name}</td>
-                <td className="py-3 px-4 border-b flex space-x-2">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    onClick={() => handleEditCategory(category)}
-                    className="shadow-sm"
-                  >
-                    编辑
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    size="small"
-                    className="ml-2 shadow-sm"
-                    onClick={() => handleDeleteCategory(category.id)}
-                  >
-                    删除
-                  </Button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="py-3 px-4 border-b text-gray-500" colSpan={2}>
-                目前没有分类
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <div className="grid grid-cols-3 gap-4"> {/* 设置为三列布局 */}
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <div key={category.id} className="bg-gray-100 p-4 rounded shadow-sm">
+              <div className="text-gray-700 font-semibold mb-2">{category.name}</div>
+              <div className="flex space-x-2">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => handleEditCategory(category)}
+                  className="shadow-sm"
+                >
+                  编辑
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  onClick={() => handleDeleteCategory(category.id)}
+                  className="shadow-sm"
+                >
+                  删除
+                </Button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-3 text-gray-500 text-center">
+            目前没有分类
+          </div>
+        )}
+      </div>
 
       {/* 添加或编辑分类的弹窗 */}
       <Modal open={showAddCategoryModal} onClose={() => setShowAddCategoryModal(false)}>

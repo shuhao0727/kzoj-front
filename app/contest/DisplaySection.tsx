@@ -38,38 +38,37 @@ const DisplaySection = ({ searchTerm, selectedType, selectedStatus, currentPage,
       <table className="min-w-full table-auto bg-white shadow-lg rounded-lg">
         <thead className="bg-gray-200 text-gray-700">
           <tr>
-            <th className="px-4 py-3 text-left">编号</th>
-            <th className="px-4 py-3 text-left">标题</th>
+            <th className="px-2 py-3 text-left w-16">编号</th> {/* 缩小宽度 */}
+            <th className="px-2 py-3 text-left w-40">标题</th> {/* 缩小宽度 */}
             <th className="px-4 py-3 text-left">赛制</th>
             <th className="px-4 py-3 text-left">状态</th>
-            <th className="px-4 py-3 text-left">起止时间</th>
-            <th className="px-4 py-3 text-left">题数</th>
-            <th className="px-4 py-3 text-left">举办者</th>
+            <th className="px-6 py-3 text-left">起止时间</th> {/* 扩大宽度 */}
+            <th className="px-6 py-3 text-left">题数</th> {/* 扩大宽度 */}
+            <th className="px-6 py-3 text-left">举办者</th> {/* 扩大宽度 */}
           </tr>
         </thead>
         <tbody>
           {paginatedData.map((contest) => (
             <tr key={contest.id} className="border-b hover:bg-gray-100 transition-colors duration-200">
-              <td className="px-4 py-3 text-left">{contest.id}</td>
-              <td className="px-4 py-3 text-left text-blue-500 underline">
-                {/* 使用 target="_blank" 和 rel="noopener noreferrer" */}
+              <td className="px-2 py-3 text-left">{contest.id}</td>
+              <td className="px-2 py-3 text-left text-blue-500 underline">
                 <Link href={`/contest/${contest.id}`} target="_blank" rel="noopener noreferrer">
                   {contest.title}
                 </Link>
               </td>
-              <td className="px-4 py-3 text-left">
+              <td className="px-4 py-3 text-left text-sm">
                 <span className={`px-2 py-1 rounded-lg ${contest.type === "公开赛" ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`}>
                   {contest.type}
                 </span>
               </td>
-              <td className="px-4 py-3 text-left">
+              <td className="px-4 py-3 text-left text-sm">
                 <span className={`px-2 py-1 rounded-lg ${contest.ended ? "bg-red-200 text-red-800" : "bg-blue-200 text-blue-800"}`}>
                   {contest.status}
                 </span>
               </td>
-              <td className="px-4 py-3 text-left">{`${contest.startDate} (${contest.duration})`}</td>
-              <td className="px-4 py-3 text-left">{contest.questionCount}</td>
-              <td className="px-4 py-3 text-left">{contest.host}</td>
+              <td className="px-6 py-3 text-left">{`${contest.startDate} (${contest.duration})`}</td>
+              <td className="px-6 py-3 text-left">{contest.questionCount}</td>
+              <td className="px-6 py-3 text-left">{contest.host}</td>
             </tr>
           ))}
         </tbody>
