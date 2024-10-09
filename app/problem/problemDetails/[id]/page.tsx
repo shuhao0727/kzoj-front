@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
-import Header from "./Header";
-import ProblemInfo from "./ProblemInfo";
-import ProblemDescription from "./ProblemDescription";
-import CodeEditorComponent from "./CodeEditor"; // 导入代码编辑器组件
-import ProviderInfo from "./ProviderInfo";
-import Tags from "./Tags";
+import { useState } from "react";
 import Discussion from "./Discussion";
+import { CodeEditor } from "./editor";
+import Header from "./Header";
+import ProblemDescription from "./ProblemDescription";
+import ProblemInfo from "./ProblemInfo";
+import ProviderInfo from "./ProviderInfo";
 import Recommendations from "./Recommendations";
+import Tags from "./Tags";
 
 const Page = () => {
   const [isEditing, setIsEditing] = useState(false); // 用于控制左下部分是显示编辑器还是题目
@@ -31,7 +31,7 @@ const Page = () => {
           <ProblemInfo />
           {/* 根据状态显示题目描述或编辑器 */}
           {isEditing ? (
-            <CodeEditorComponent /> // 显示代码编辑器
+            <CodeEditor /> // 显示代码编辑器
           ) : (
             <ProblemDescription /> // 显示题目详细描述
           )}
