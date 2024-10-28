@@ -1,27 +1,17 @@
 import type { Metadata } from "next";
 import React from "react";
-import { Footer } from "./footer";
+
 import "./globals.css";
-import { Header } from "./header";
 
 export const metadata: Metadata = {
   title: "KZOJ",
   description: "江苏省昆山中学OJ系统",
 };
 
-const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+const RootLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
-    <html lang="zh_CN" className="h-full"> {/* 确保 html 高度为 100% */}
-      <body className="flex flex-col min-h-screen h-full">
-        {/* 头部 */}
-        <Header />
-
-        {/* 主内容部分使用 flex-grow 以填充剩余空间 */}
-        <main className="flex-grow">{children}</main>
-
-        {/* 底部始终固定在页面底部 */}
-        <Footer />
-      </body>
+    <html lang="zh_CN" className="h-full">
+      <body className="flex flex-col min-h-screen h-full">{children}</body>
     </html>
   );
 };
