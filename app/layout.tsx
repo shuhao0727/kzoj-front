@@ -9,7 +9,7 @@ import { useUserService } from "@/lib/user";
 import useSWR from "swr";
 import { UserContext } from "./context";
 
-const RootLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const axios = useAxios();
   const userService = useUserService(axios);
 

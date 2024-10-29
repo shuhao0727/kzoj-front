@@ -2,9 +2,11 @@ import classNames from "classnames";
 import { FieldProps } from "formik";
 import React from "react";
 
+/* eslint-disable */
 export const Input: React.FC<
   FieldProps & React.InputHTMLAttributes<any> & { label?: string }
 > = ({ field, form, meta, label, className, ...props }) => {
+  /* eslint-enable */
   return (
     <div className={className}>
       {label && (

@@ -9,7 +9,7 @@ import { UserContext } from "../context";
 import { Footer } from "./footer";
 import { Header } from "./header";
 
-const MainLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const axios = useAxios();
   const userService = useUserService(axios);
   const router = useRouter();

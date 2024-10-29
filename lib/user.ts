@@ -32,14 +32,14 @@ class UserService {
     form.set("username", username);
     form.set("password", password);
     return this.axios.post<User>(`/user/login`, form).then((res) => {
-      mutate((_) => true, undefined, { revalidate: false });
+      mutate(() => true, undefined, { revalidate: false });
       return UserService.mapTimestamps(res.data);
     });
   };
 
   logout = (): Promise<void> => {
     return this.axios.post<void>(`/user/logout`).then(() => {
-      mutate((_) => true, undefined, { revalidate: false });
+      mutate(() => true, undefined, { revalidate: false });
     });
   };
 
@@ -58,7 +58,7 @@ class UserService {
         authority: "USER",
       })
       .then((res) => {
-        mutate((_) => true, undefined, { revalidate: false });
+        mutate(() => true, undefined, { revalidate: false });
         return UserService.mapTimestamps(res.data);
       });
   };

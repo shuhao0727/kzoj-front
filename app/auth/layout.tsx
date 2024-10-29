@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "../context";
 
-const AuthLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+const AuthLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const user = useContext(UserContext);
   const router = useRouter();
   const searchParams = useSearchParams();

@@ -19,5 +19,5 @@ export const useAxios = () => {
       }
     );
     return axios;
-  }, [config.baseUrl]);
+  }, []);
 };
