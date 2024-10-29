@@ -1,6 +1,8 @@
 "use client";
 
-import { login } from "@/lib/user";
+import { useAxios } from "@/lib/axios";
+import { config } from "@/lib/config";
+import { useUserService } from "@/lib/user";
 import { IconLock, IconUser } from "@douyinfe/semi-icons";
 import {
   Button,
@@ -11,12 +13,16 @@ import {
   Spin,
   Typography,
 } from "@douyinfe/semi-ui";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 
 const AuthLoginPage: React.FC = () => {
+  const axios = useAxios();
+  const userService = useUserService(axios);
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const redirect = useMemo(
@@ -27,7 +33,8 @@ const AuthLoginPage: React.FC = () => {
   const doLogin = useCallback(
     (username: string, password: string) => {
       setLoading(true);
-      login(username, password)
+      userService
+        .login(username, password)
         .then((user) => {
           Notification.success({
             title: "登录成功",
@@ -43,12 +50,19 @@ const AuthLoginPage: React.FC = () => {
         })
         .finally(() => setLoading(false));
     },
-    [router, redirect, setLoading]
+    [userService, router, redirect, setLoading]
   );
 
   return (
     <Card>
-      <Typography.Title heading={2}>用户登陆</Typography.Title>
+      <div className="flex items-end">
+        <Typography.Title heading={2}>用户登陆</Typography.Title>
+        {config.registerEnabled && (
+          <span className="ml-auto">
+            <Link href="/auth/register">注册用户</Link>
+          </span>
+        )}
+      </div>
       <Divider />
       <Form
         disabled={loading}

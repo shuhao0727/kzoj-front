@@ -1,18 +1,27 @@
 "use client";
 
-import { getSelf } from "@/lib/user";
-import { Skeleton, Toast } from "@douyinfe/semi-ui";
+import { useAxios } from "@/lib/axios";
+import { useUserService } from "@/lib/user";
+import { Notification, Skeleton } from "@douyinfe/semi-ui";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import useSWR from "swr";
 
 const IndexPage: React.FC = () => {
-  const { error, isLoading } = useSWR("/user/getSelf", () => getSelf());
+  const axios = useAxios();
+  const userService = useUserService(axios);
   const router = useRouter();
 
+  const { error, isLoading } = useSWR("/user/self", () =>
+    userService.getSelf()
+  );
+
   useEffect(() => {
-    if (!isLoading) {
-      Toast.info("请先登录");
+    if (!isLoading && error) {
+      Notification.error({
+        title: "获取用户信息失败",
+        content: `无法获取用户信息（${error}），请重新登录。`,
+      });
       router.push("/auth/login");
     } else {
       router.push("/main/index");

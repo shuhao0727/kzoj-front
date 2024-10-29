@@ -1,5 +1,6 @@
+import { Axios } from "axios";
 import Dayjs from "dayjs";
-import { axios } from "./axios";
+import { mutate } from "swr";
 
 export type User = {
   uuid?: string;
@@ -11,53 +12,71 @@ export type User = {
   utcUpdated: Dayjs.Dayjs;
 };
 
-const setUserTimestamps = (data: User): User => {
-  return {
-    ...data,
-    utcCreated: Dayjs(data.utcCreated),
-    utcUpdated: Dayjs(data.utcUpdated),
+class UserService {
+  private axios: Axios;
+
+  constructor(axios: Axios) {
+    this.axios = axios;
+  }
+
+  static mapTimestamps = (data: User): User => {
+    return {
+      ...data,
+      utcCreated: Dayjs(data.utcCreated),
+      utcUpdated: Dayjs(data.utcUpdated),
+    };
   };
-};
 
-export const login = (username: string, password: string): Promise<User> => {
-  const form = new FormData();
-  form.set("username", username);
-  form.set("password", password);
-  return axios
-    .post<User>(`/user/login`, form)
-    .then((res) => setUserTimestamps(res.data))
-    .catch((err) => {
-      if (err.response) {
-        throw err.response.data;
-      } else {
-        throw "无法连接到服务器";
-      }
+  login = (username: string, password: string): Promise<User> => {
+    const form = new FormData();
+    form.set("username", username);
+    form.set("password", password);
+    return this.axios
+      .post<User>(`/user/login`, form)
+      .then((res) => {
+        mutate((_) => true, undefined, { revalidate: false });
+        return UserService.mapTimestamps(res.data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          throw err.response.data;
+        } else {
+          throw "无法连接到服务器";
+        }
+      });
+  };
+
+  logout = (): Promise<void> => {
+    return this.axios.post<void>(`/user/logout`).then(() => {
+      mutate((_) => true, undefined, { revalidate: false });
     });
-};
+  };
 
-export const logout = (): Promise<void> => {
-  return axios.post<void>(`/user/logout`).then();
-};
+  register = (
+    user: Pick<User, "username" | "realName" | "email">,
+    password: string
+  ): Promise<User> => {
+    return this.axios
+      .post<User>(`/user/signup`, {
+        ...user,
+        plainPassword: password,
+        gender: "UNISEX",
+        school: "江苏省昆山中学",
+        grade: 10,
+        githubHomepage: "",
+        authority: "USER",
+      })
+      .then((res) => {
+        mutate((_) => true, undefined, { revalidate: false });
+        return UserService.mapTimestamps(res.data);
+      });
+  };
 
-export const register = (
-  user: Pick<User, "username" | "realName" | "email">,
-  password: string
-): Promise<User> => {
-  return axios
-    .post<User>(`/user/signup`, {
-      ...user,
-      plainPassword: password,
-      gender: "UNISEX",
-      school: "江苏省昆山中学",
-      grade: 10,
-      githubHomepage: "",
-      authority: "USER",
-    })
-    .then((res) => setUserTimestamps(res.data));
-};
+  getSelf = (): Promise<User> => {
+    return this.axios
+      .get<User>(`/user/self`)
+      .then((res) => UserService.mapTimestamps(res.data));
+  };
+}
 
-export const getSelf = (): Promise<User> => {
-  return axios
-    .get<User>(`/user/self`)
-    .then((res) => setUserTimestamps(res.data));
-};
+export const useUserService = (axios: Axios) => new UserService(axios);

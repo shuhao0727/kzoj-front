@@ -1,6 +1,7 @@
 "use client";
 
-import { register } from "@/lib/user";
+import { useAxios } from "@/lib/axios";
+import { useUserService } from "@/lib/user";
 import { IconIdCard, IconLock, IconMail, IconUser } from "@douyinfe/semi-icons";
 import {
   Button,
@@ -11,21 +12,29 @@ import {
   Spin,
   Typography,
 } from "@douyinfe/semi-ui";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 
 const AuthRegisterPage: React.FC = () => {
+  const axios = useAxios();
+  const userService = useUserService(axios);
   const router = useRouter();
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const doRegister = useCallback(
     (username: string, password: string, realName: string, email: string) => {
       setLoading(true);
-      register({
-        username: username,
-        realName: realName,
-        email: email,
-      }, password)
+      userService
+        .register(
+          {
+            username: username,
+            realName: realName,
+            email: email,
+          },
+          password
+        )
         .then((user) => {
           Notification.success({
             title: "注册成功",
@@ -46,7 +55,12 @@ const AuthRegisterPage: React.FC = () => {
 
   return (
     <Card>
-      <Typography.Title heading={2}>用户注册</Typography.Title>
+      <div className="flex items-end">
+        <Typography.Title heading={2}>用户注册</Typography.Title>
+        <span className="ml-auto">
+          <Link href="/auth/login">返回登录</Link>
+        </span>
+      </div>
       <Divider />
       <Form
         disabled={loading}
