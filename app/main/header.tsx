@@ -11,9 +11,9 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useCallback, useContext } from "react";
 import { UserContext } from "../context";
 
-type NavigationItem = { name: string; href: string; target?: string };
+type Item = { name: string; href: string; target?: string };
 
-const appNavigationItems: NavigationItem[] = [
+const items: Item[] = [
   { name: "首页", href: "/main/index" },
   { name: "题目", href: "/main/problems" },
   // { name: "训练", href: "/training" },
@@ -22,12 +22,6 @@ const appNavigationItems: NavigationItem[] = [
   // { name: "排名", href: "/ranking" },
   // { name: "讨论", href: "/discuss" },
 ];
-
-// const userNavigationItems: NavigationItem[] = [
-//   // { name: "我的主页", href: "/user/profile", target: "_blank" }, // 在新标签页打开
-//   // { name: "我的设置", href: "/user/settings", target: "_blank" }, // 在新标签页打开
-//   // { name: "后台管理", href: "/admin", target: "_blank" }, // 在新标签页打开
-// ];
 
 export const Header: React.FC = () => {
   const axios = useAxios();
@@ -46,18 +40,18 @@ export const Header: React.FC = () => {
         <div className="inline-flex items-center">
           <div className="px-4 py-2 text-gray-300">{config.product}</div>
           <div className="ml-4 flex items-baseline space-x-4">
-            {appNavigationItems.map((item) => (
+            {items.map(({ name, href }) => (
               <Link
-                key={item.name}
-                href={item.href}
+                key={href}
+                href={href}
                 className={classNames(
                   "rounded-md px-4 py-2",
-                  pathname === item.href
+                  pathname === href
                     ? "bg-gray-900 text-white"
                     : "text-gray-300 hover:bg-gray-700 hover:text-white"
                 )}
               >
-                {item.name}
+                {name}
               </Link>
             ))}
           </div>
@@ -78,9 +72,18 @@ export const Header: React.FC = () => {
             >
               <div className="py-1">
                 <MenuItem>
+                  <Link
+                    href="/admin"
+                    target="_blank"
+                    className="block w-full px-4 py-2 text-left text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                  >
+                    系统管理
+                  </Link>
+                </MenuItem>
+                <MenuItem>
                   <button
                     type="submit"
-                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                    className="block w-full px-4 py-2 text-left text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                     onClick={() => logout()}
                   >
                     退出登录
