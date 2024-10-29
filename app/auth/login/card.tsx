@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert } from "@/components/alert";
 import { Card } from "@/components/card";
 import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
@@ -39,9 +40,9 @@ export const AuthLoginCard: React.FC = () => {
         )}
       </div>
       {error && (
-        <div className="bg-red-100 my-2 p-4 border-l-4 border-red-500">
-          登录失败，请检查用户或密码。
-        </div>
+        <Alert type="error">
+          <p>登录失败，请检查用户或密码。</p>
+        </Alert>
       )}
       <hr className="mb-2" />
       <Formik

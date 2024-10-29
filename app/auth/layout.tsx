@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert } from "@/components/alert";
 import { Title } from "@/components/title";
 import { config } from "@/lib/config";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,13 +28,13 @@ const AuthLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         </div>
         <div className="my-8">
           {searchParams.has("error") && (
-            <div className="bg-blue-100 mb-4 p-4 border-l-4 border-blue-500">
+            <Alert type="info">
               {searchParams.get("error") === "unauthenticated"
                 ? "请登录后查看。"
                 : searchParams.get("error") === "logout"
                 ? "已退出登录。"
                 : searchParams.get("error")}
-            </div>
+            </Alert>
           )}
           {children}
         </div>

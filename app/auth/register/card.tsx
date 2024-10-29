@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert } from "@/components/alert";
 import { Card } from "@/components/card";
 import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
@@ -31,9 +32,9 @@ export const AuthRegisterCard: React.FC = () => {
         </span>
       </div>
       {error && (
-        <div className="bg-red-100 my-2 p-4 border-l-4 border-red-500">
-          注册失败（{error}），请检查填写的信息。
-        </div>
+        <Alert type="error" title="注册失败">
+          <p>{String(error)}</p>
+        </Alert>
       )}
       <hr className="mb-2" />
       <Formik

@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert } from "@/components/alert";
 import { Card } from "@/components/card";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
@@ -49,13 +50,10 @@ export const MainProblemsListTable: React.FC = () => {
           <tbody>
             {!!error ? (
               <tr>
-                <td
-                  colSpan={4}
-                  className="p-4 bg-red-100 border-l-4 border-red-500"
-                >
-                  <Title as="h3" size="xl">
-                    加载失败{error && `：${error}`}
-                  </Title>
+                <td colSpan={4}>
+                  <Alert type="error" title="加载题目失败">
+                    <p>{String(error)}</p>
+                  </Alert>
                 </td>
               </tr>
             ) : !!problems ? (
