@@ -1,6 +1,6 @@
 {
   "name": "kzoj",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -10,29 +10,28 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@douyinfe/semi-icons": "^2.68.3",
-    "@douyinfe/semi-ui": "^2.67.0",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.1.5",
+    "@tailwindcss/forms": "^0.5.9",
     "axios": "^1.7.7",
     "dayjs": "^1.11.13",
+    "formik": "^2.4.6",
     "next": "14.2.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-simple-code-editor": "^0.14.1",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@headlessui/react": "^2.1.8",
-    "@heroicons/react": "^2.1.5",
     "@types/node": "^20",
-    "@types/prismjs": "^1.26.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "babel-plugin-import": "^1.13.8",
+    "autoprefixer": "^10.4.20",
     "classnames": "^2.5.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
     "typescript": "^5"
   }
 }

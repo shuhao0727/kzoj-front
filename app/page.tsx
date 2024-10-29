@@ -1,34 +1,22 @@
 "use client";
 
-import { useAxios } from "@/lib/axios";
-import { useUserService } from "@/lib/user";
-import { Notification, Skeleton } from "@douyinfe/semi-ui";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import useSWR from "swr";
+import React, { useContext, useEffect } from "react";
+import { UserContext } from "./context";
 
 const IndexPage: React.FC = () => {
-  const axios = useAxios();
-  const userService = useUserService(axios);
+  const user = useContext(UserContext);
   const router = useRouter();
 
-  const { error, isLoading } = useSWR("/user/self", () =>
-    userService.getSelf()
-  );
-
   useEffect(() => {
-    if (!isLoading && error) {
-      Notification.error({
-        title: "获取用户信息失败",
-        content: `无法获取用户信息（${error}），请重新登录。`,
-      });
-      router.push("/auth/login");
+    if (!user) {
+      router.push("/auth/login?error=unauthenticated");
     } else {
       router.push("/main/index");
     }
-  }, [isLoading, error, router]);
+  }, [user, router]);
 
-  return <Skeleton />;
+  return "";
 };
 
 export default IndexPage;

@@ -2,11 +2,10 @@
 
 import { useAxios } from "@/lib/axios";
 import { useUserService } from "@/lib/user";
-import { Notification } from "@douyinfe/semi-ui";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useSWR from "swr";
-import { UserContext } from "./context";
+import { UserContext } from "../context";
 import { Footer } from "./footer";
 import { Header } from "./header";
 
@@ -22,18 +21,18 @@ const MainLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
 
   useEffect(() => {
     if (!!error) {
-      Notification.error({
-        title: "获取用户信息失败",
-        content: `无法获取用户信息（${error}），请重新登录。`,
-      });
-      router.push(`/auth/login?redirect=${pathname}`);
+      router.push(`/auth/login?redirect=${pathname}&error=unauthenticated`);
     }
   }, [error, router, pathname]);
 
   return (
     <UserContext.Provider value={user ?? null}>
       <Header />
-      <main className="pb-12 flex-grow bg-gray-50">{children}</main>
+      <main className="pb-12 flex-grow bg-gray-50">
+        <div className="container max-w-6xl mx-auto my-6 space-y-12">
+          {children}
+        </div>
+      </main>
       <Footer />
     </UserContext.Provider>
   );

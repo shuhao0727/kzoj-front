@@ -41,15 +41,24 @@ class UserService {
         if (err.response) {
           throw err.response.data;
         } else {
-          throw "无法连接到服务器";
+          throw err;
         }
       });
   };
 
   logout = (): Promise<void> => {
-    return this.axios.post<void>(`/user/logout`).then(() => {
-      mutate((_) => true, undefined, { revalidate: false });
-    });
+    return this.axios
+      .post<void>(`/user/logout`)
+      .then(() => {
+        mutate((_) => true, undefined, { revalidate: false });
+      })
+      .catch((err) => {
+        if (err.response) {
+          throw err.response.data;
+        } else {
+          throw err;
+        }
+      });
   };
 
   register = (
@@ -69,13 +78,27 @@ class UserService {
       .then((res) => {
         mutate((_) => true, undefined, { revalidate: false });
         return UserService.mapTimestamps(res.data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          throw err.response.data;
+        } else {
+          throw err;
+        }
       });
   };
 
   getSelf = (): Promise<User> => {
     return this.axios
       .get<User>(`/user/self`)
-      .then((res) => UserService.mapTimestamps(res.data));
+      .then((res) => UserService.mapTimestamps(res.data))
+      .catch((err) => {
+        if (err.response) {
+          throw err.response.data;
+        } else {
+          throw err;
+        }
+      });
   };
 }
 
