@@ -3,13 +3,12 @@
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
-import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { config } from "@/lib/config";
 import { useUserService } from "@/lib/user";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -63,7 +62,6 @@ export const AuthLoginCard: React.FC = () => {
         {({ isSubmitting }) => (
           <Form>
             <Field component={Input} name="username" type="text" label="用户" />
-            <ErrorMessage name="username" component={Error} />
             <Field
               component={Input}
               name="password"
@@ -71,7 +69,6 @@ export const AuthLoginCard: React.FC = () => {
               label="密码"
               className="mt-2"
             />
-            <ErrorMessage name="password" component={Error} />
             <Button
               htmlType="submit"
               type="info"

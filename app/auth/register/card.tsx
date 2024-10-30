@@ -3,12 +3,11 @@
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
-import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { useUserService } from "@/lib/user";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -66,7 +65,6 @@ export const AuthRegisterCard: React.FC = () => {
         {({ isSubmitting }) => (
           <Form>
             <Field component={Input} name="username" type="text" label="用户" />
-            <ErrorMessage name="username" component={Error} />
             <Field
               component={Input}
               name="password"
@@ -74,7 +72,6 @@ export const AuthRegisterCard: React.FC = () => {
               label="密码"
               className="mt-2"
             />
-            <ErrorMessage name="password" component={Error} />
             <Field
               component={Input}
               name="realName"
@@ -82,7 +79,6 @@ export const AuthRegisterCard: React.FC = () => {
               label="真实姓名"
               className="mt-2"
             />
-            <ErrorMessage name="realName" component={Error} />
             <Field
               component={Input}
               name="email"
@@ -90,7 +86,6 @@ export const AuthRegisterCard: React.FC = () => {
               label="电子邮件"
               className="mt-2"
             />
-            <ErrorMessage name="email" component={Error} />
             <Button
               htmlType="submit"
               type="info"

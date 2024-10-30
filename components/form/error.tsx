@@ -1,16 +1,10 @@
-import classNames from "classnames";
+import { ErrorMessage } from "formik";
 import React from "react";
 
-export const Error: React.FC<
-  { message?: string } & React.BaseHTMLAttributes<HTMLDivElement>
-> = ({ message, className, ...props }) => {
+export const Error: React.FC<{ name: string }> = ({ name }) => {
   return (
-    <>
-      {message && (
-        <div className={classNames("text-red-500", className)} {...props}>
-          {message}
-        </div>
-      )}
-    </>
+    <ErrorMessage name={name}>
+      {(message) => <p className="text-red-500">{message}</p>}
+    </ErrorMessage>
   );
 };

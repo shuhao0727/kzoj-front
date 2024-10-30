@@ -5,6 +5,7 @@ import { FieldProps } from "formik";
 import React, { useMemo } from "react";
 
 import markdownit from "markdown-it";
+import { Error } from "./error";
 const md = markdownit();
 
 const __Textarea: React.FC<
@@ -13,7 +14,7 @@ const __Textarea: React.FC<
       large?: boolean;
     }
   // eslint-disable-next-line
-> = ({ field, form, meta, large, ...props }) => {
+> = ({ field, form, meta, large, onBlur, onInput, ...props }) => {
   return (
     <textarea
       {...field}
@@ -23,6 +24,14 @@ const __Textarea: React.FC<
         "block w-full py-1.5 resize-none rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300",
         "focus:ring-2 focus:ring-inset focus:ring-blue-600"
       )}
+      onBlur={(event) => {
+        form.setFieldTouched(field.name);
+        onBlur?.(event);
+      }}
+      onInput={(event) => {
+        form.setFieldTouched(field.name);
+        onInput?.(event);
+      }}
     />
   );
 };
@@ -62,6 +71,9 @@ export const Textarea: React.FC<
           />
         </div>
       )}
+      <div>
+        <Error name={field.name} />
+      </div>
     </div>
   );
 };
