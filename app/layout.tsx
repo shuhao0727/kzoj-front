@@ -25,7 +25,7 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         {isLoading ? (
           <div className="text-center mt-8">正在加载...</div>
         ) : (
-          <UserContext.Provider value={user ?? null}>
+          <UserContext.Provider value={isLoading ? null : user ?? null}>
             {children}
           </UserContext.Provider>
         )}

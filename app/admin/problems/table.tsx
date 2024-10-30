@@ -1,10 +1,11 @@
 "use client";
 
+import { Alert } from "@/components/alert";
 import { Card } from "@/components/card";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { useProblemService } from "@/lib/problem";
-import { ArchiveBoxXMarkIcon } from "@heroicons/react/16/solid";
+import { ArchiveBoxXMarkIcon, PlusIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
@@ -31,9 +32,18 @@ export const AdminProblemsListTable: React.FC = () => {
   return (
     <Card
       title={
-        <Title as="h2" size="2xl">
-          题目列表
-        </Title>
+        <div className="flex">
+          <Title as="h2" size="2xl">
+            题目列表
+          </Title>
+          <Link
+            href="/admin/problems/create"
+            className="ml-auto inline-flex items-center text-green-600"
+          >
+            <PlusIcon className="w-4 h-4" />
+            <span className="ml-1">添加题目</span>
+          </Link>
+        </div>
       }
     >
       <table className="w-full text-left table-auto">
@@ -49,13 +59,10 @@ export const AdminProblemsListTable: React.FC = () => {
           <tbody>
             {!!error ? (
               <tr>
-                <td
-                  colSpan={4}
-                  className="p-4 bg-red-100 border-l-4 border-red-500"
-                >
-                  <Title as="h3" size="xl">
-                    加载失败{error && `：${error}`}
-                  </Title>
+                <td colSpan={4}>
+                  <Alert type="error" title="加载题目失败">
+                    <p>{String(error)}</p>
+                  </Alert>
                 </td>
               </tr>
             ) : !!problems ? (

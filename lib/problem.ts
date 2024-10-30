@@ -16,7 +16,7 @@ export type Problem = {
   problemSource: string;
   difficulty: number | string;
   tip: string;
-  status: string;
+  status: "PUBLIC" | "PRIVATE" | "CONTEST";
   score: number;
   utcCreated: Dayjs.Dayjs;
   utcLastModified: Dayjs.Dayjs;
@@ -29,15 +29,21 @@ export class ProblemService {
     this.axios = axios;
   }
 
-  createProblem = (problem: Problem): Promise<void> => {
-    return this.axios.post<void>(`/problem/create`, problem).then();
+  createProblem = (
+    problem: Omit<Problem, "id" | "utcCreated" | "utcLastModified">
+  ): Promise<number> => {
+    return this.axios
+      .post<string>(`/problem/create`, problem)
+      .then((res) => Number.parseInt(res.data));
   };
 
   deleteProblem = (id: number): Promise<void> => {
     return this.axios.delete<void>(`/problem/${id}`).then();
   };
 
-  updateProblem = (problem: Problem): Promise<void> => {
+  updateProblem = (
+    problem: Omit<Problem, "utcCreated" | "utcLastModified">
+  ): Promise<void> => {
     return this.axios.put<void>(`/problem/update`, problem).then();
   };
 

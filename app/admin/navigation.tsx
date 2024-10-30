@@ -14,7 +14,7 @@ const navigation: { name: string; href: string }[] = [
 export const AdminNavigation = () => {
   const pathname = usePathname();
   return (
-    <nav className="hidden lg:flex lg:w-64 lg:flex-col bg-gray-900 fixed top-0 left-0 h-screen">
+    <nav className="flex w-48 flex-col bg-gray-900 fixed top-0 left-0 h-screen">
       <div className="flex grow flex-col gap-y-5 overflow-y-auto px-4 py-6">
         <div className="flex flex-1 flex-col px-2">
           <ul className="flex flex-col gap-y-7">
