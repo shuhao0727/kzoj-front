@@ -60,14 +60,13 @@ export const AuthLoginCard: React.FC = () => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form>
+          <Form className="space-y-4">
             <Field component={Input} name="username" type="text" label="用户" />
             <Field
               component={Input}
               name="password"
               type="password"
               label="密码"
-              className="mt-2"
             />
             <Button
               htmlType="submit"

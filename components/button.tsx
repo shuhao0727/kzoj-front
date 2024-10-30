@@ -3,8 +3,8 @@ import React from "react";
 
 export const Button: React.FC<
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
-    type: "info" | "success" | "error";
-    htmlType: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+    type: "info" | "success" | "danger";
+    htmlType?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
     loading?: boolean;
   }
 > = ({ type, htmlType, className, children, disabled, loading, ...props }) => {
@@ -15,13 +15,13 @@ export const Button: React.FC<
       disabled={disabled || loading}
       className={classNames(
         className,
-        "w-full mt-4 flex w-full justify-center rounded-md px-3 py-1.5 font-semibold text-white shadow-sm",
+        "w-full flex w-full justify-center rounded-md px-3 py-1.5 font-semibold text-white shadow-sm",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
         type === "info"
           ? "bg-blue-600 hover:bg-blue-500 focus-visible:outline-blue-600"
           : type === "success"
           ? "bg-green-600 hover:bg-green-500 focus-visible:outline-green-600"
-          : type === "error"
+          : type === "danger"
           ? "bg-red-600 hover:bg-red-500 focus-visible:outline-red-600"
           : ""
       )}
