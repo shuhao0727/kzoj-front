@@ -1,11 +1,19 @@
 "use client";
 
 import { Alert } from "@/components/alert";
+import { Button } from "@/components/button";
 import { Card } from "@/components/card";
+import { Difficulty } from "@/components/problem/difficulty";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { useProblemService } from "@/lib/problem";
-import { ArchiveBoxXMarkIcon, PlusIcon } from "@heroicons/react/16/solid";
+import {
+  ArchiveBoxIcon,
+  ArchiveBoxXMarkIcon,
+  PencilSquareIcon,
+  PlusIcon,
+} from "@heroicons/react/16/solid";
+import classNames from "classnames";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
@@ -38,10 +46,11 @@ export const AdminProblemsListTable: React.FC = () => {
           </Title>
           <Link
             href="/admin/problems/create"
-            className="ml-auto inline-flex items-center text-green-600"
+            className="ml-auto inline-flex text-green-600"
           >
-            <PlusIcon className="w-4 h-4" />
-            <span className="ml-1">添加题目</span>
+            <Button type="success" icon={PlusIcon}>
+              添加题目
+            </Button>
           </Link>
         </div>
       }
@@ -49,10 +58,12 @@ export const AdminProblemsListTable: React.FC = () => {
       <table className="w-full text-left table-auto">
         <thead>
           <tr className="border-b">
-            <th className="p-2 w-12 text-left">状态</th>
-            <th className="p-2 text-left">题号</th>
-            <th className="p-2 text-left">名称</th>
-            <th className="p-2 text-right">操作</th>
+            <th className="p-2 w-[5rem] text-center">题号</th>
+            <th className="p-2 pl-4 text-center">名称</th>
+            <th className="p-2 w-[5rem] text-center">难度</th>
+            <th className="p-2 w-[8rem] text-center">作者</th>
+            <th className="p-2 w-[8rem] text-center">提交</th>
+            <th className="p-2 w-[14rem] text-center">操作</th>
           </tr>
         </thead>
         {!isLoading && (
@@ -68,15 +79,52 @@ export const AdminProblemsListTable: React.FC = () => {
             ) : !!problems ? (
               <>
                 {problems.map((problem) => (
-                  <tr key={`${problem.id}-${problem.title}`}>
-                    <td></td>
-                    <td>{problem.id}</td>
-                    <td>
+                  <tr
+                    key={`${problem.id}-${problem.title}`}
+                    className={classNames(
+                      "h-12 border-b border-gray-100",
+                      "hover:bg-gray-100"
+                    )}
+                  >
+                    <td className="p-2 text-center text-sm font-mono">
+                      P{String(problem.id).padStart(4, "0")}
+                    </td>
+                    <td className="p-2 pl-4">
                       <Link href={`/main/problems/${problem.id}`}>
-                        {problem.title}
+                        <button
+                          className={classNames(
+                            "w-full text-left text-blue-700",
+                            "hover:text-blue-500 hover:underline focus:underline"
+                          )}
+                        >
+                          {problem.title}
+                        </button>
                       </Link>
                     </td>
-                    <td>{problem.difficulty}</td>
+                    <td className="p-2 text-center">
+                      <Difficulty difficulty={problem.difficulty} />
+                    </td>
+                    <td className="p-2 text-center">doowzs</td>
+                    <td className="p-2 text-center">0 / 0</td>
+                    <td className="p-2 text-center">
+                      <span className="flex space-x-2">
+                        <Link href={`/admin/problems/${problem.id}`}>
+                          <Button
+                            type="warning"
+                            size="sm"
+                            icon={ArchiveBoxIcon}
+                            disabled
+                          >
+                            查看提交
+                          </Button>
+                        </Link>
+                        <Link href={`/admin/problems/${problem.id}`}>
+                          <Button type="info" size="sm" icon={PencilSquareIcon}>
+                            编辑题目
+                          </Button>
+                        </Link>
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </>

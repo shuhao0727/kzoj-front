@@ -1,6 +1,29 @@
 import { Axios } from "axios";
 import Dayjs from "dayjs";
 
+export type Difficulty = "1" | "2" | "3" | "4" | "5" | "6" | "7";
+
+export const Difficulties: Record<
+  Difficulty,
+  { colorText: string; labelText: string; className: string }
+> = {
+  "1": { colorText: "红", labelText: "入门", className: "bg-red-600" },
+  "2": { colorText: "橙", labelText: "普及-", className: "bg-orange-600" },
+  "3": { colorText: "黄", labelText: "普及", className: "bg-yellow-600" },
+  "4": {
+    colorText: "绿",
+    labelText: "普及+ / 提高-",
+    className: "bg-green-600",
+  },
+  "5": { colorText: "蓝", labelText: "提高", className: "bg-blue-600" },
+  "6": {
+    colorText: "紫",
+    labelText: "提高+ / 省选-",
+    className: "bg-purple-600",
+  },
+  "7": { colorText: "黑", labelText: "省选 / NOI", className: "bg-purple-800" },
+};
+
 export type Problem = {
   id?: number;
   title: string;
@@ -14,7 +37,7 @@ export type Problem = {
   outputDescription: string;
   examples: string;
   problemSource: string;
-  difficulty: number | string;
+  difficulty: Difficulty;
   tip: string;
   status: "PUBLIC" | "PRIVATE" | "CONTEST";
   score: number;
@@ -53,7 +76,7 @@ export class ProblemService {
     isAscending?: boolean
   ) => {
     return this.axios
-      .get<Problem[]>(`/problem/queryByPage`, {
+      .get<Problem[]>(`/problem/page`, {
         params: {
           pageIndex: pageIndex,
           pageSize: pageSize,

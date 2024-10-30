@@ -8,7 +8,7 @@ import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
 import { Select } from "@/components/form/select";
 import { Textarea } from "@/components/form/textarea";
-import { Problem } from "@/lib/problem";
+import { Difficulties, Difficulty, Problem } from "@/lib/problem";
 import { CheckIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
@@ -55,7 +55,7 @@ export const AdminProblemForm: React.FC<{
           })
         ).min(1, "样例数据不能为空"),
         problemSource: Yup.string(),
-        difficulty: Yup.string().equals(["1", "2", "3", "4", "5", "6", "7"]),
+        difficulty: Yup.string().equals(Object.keys(Difficulties)),
         tip: Yup.string(),
       })}
       onSubmit={(values, { setSubmitting }) => {
@@ -78,7 +78,7 @@ export const AdminProblemForm: React.FC<{
             )
             .join(""),
           problemSource: values.problemSource,
-          difficulty: values.difficulty,
+          difficulty: values.difficulty as Difficulty,
           tip: values.tip,
           status: "PUBLIC",
           score: 100,
@@ -110,13 +110,12 @@ export const AdminProblemForm: React.FC<{
                 label="内存空间限制"
               />
               <Field component={Select} name="difficulty" label="难度">
-                <option value="1">（红）入门</option>
-                <option value="2">（橙）普及-</option>
-                <option value="3">（黄）普及</option>
-                <option value="4">（绿）普及+/提高-</option>
-                <option value="5">（蓝）提高</option>
-                <option value="6">（紫）提高+/省选</option>
-                <option value="7">（黑）NOI/CTSC</option>
+                {(Object.keys(Difficulties) as Difficulty[]).map((value) => (
+                  <option key={value} value={value}>
+                    （{Difficulties[value].colorText}）
+                    {Difficulties[value].labelText}
+                  </option>
+                ))}
               </Field>
             </div>
             <Field
@@ -166,22 +165,23 @@ export const AdminProblemForm: React.FC<{
                     <div className="grid grid-cols-2 gap-x-4">
                       <Button
                         type="success"
-                        className="items-center text-sm"
+                        size="sm"
+                        icon={PlusIcon}
                         onClick={() => {
                           helpers.push({ input: "", output: "" });
                         }}
                       >
-                        <PlusIcon className="w-3 h-3 mr-2" /> 增加样例
+                        增加样例
                       </Button>
                       <Button
                         type="danger"
-                        className="items-center text-sm"
+                        size="sm"
+                        icon={TrashIcon}
                         disabled={values.examples.length <= 1}
                         onClick={() => {
                           helpers.pop();
                         }}
                       >
-                        <TrashIcon className="w-3 h-3 mr-2" />
                         删除最后一组样例
                       </Button>
                     </div>
@@ -211,11 +211,10 @@ export const AdminProblemForm: React.FC<{
             <Button
               htmlType="submit"
               type="success"
-              className="items-center"
+              icon={CheckIcon}
               disabled={isSubmitting}
               loading={isSubmitting}
             >
-              <CheckIcon className="w-4 h-4 mr-1" />
               {!!problem ? "修改题目" : "创建题目"}
             </Button>
           </div>

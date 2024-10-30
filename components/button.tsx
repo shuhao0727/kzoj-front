@@ -1,13 +1,28 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useMemo } from "react";
 
 export const Button: React.FC<
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
-    type: "info" | "success" | "danger";
+    type: "info" | "success" | "warning" | "danger";
+    size?: "sm";
+    icon?: React.ComponentType<
+      React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>
+    >;
     htmlType?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
     loading?: boolean;
   }
-> = ({ type, htmlType, className, children, disabled, loading, ...props }) => {
+> = ({
+  type,
+  size,
+  icon,
+  htmlType,
+  className,
+  children,
+  disabled,
+  loading,
+  ...props
+}) => {
+  const Icon = useMemo(() => icon, [icon]);
   return (
     <button
       {...props}
@@ -15,7 +30,8 @@ export const Button: React.FC<
       disabled={disabled || loading}
       className={classNames(
         className,
-        "w-full flex w-full justify-center rounded-md px-3 py-1.5 font-semibold text-white shadow-sm",
+        size === "sm" ? "text-sm" : "",
+        "w-full flex w-full justify-center items-center rounded-md px-3 py-1.5 font-semibold text-white shadow-sm",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
         type === "info"
           ? disabled
@@ -25,6 +41,10 @@ export const Button: React.FC<
           ? disabled
             ? "bg-green-100"
             : "bg-green-600 hover:bg-green-500 focus-visible:outline-green-600"
+          : type === "warning"
+          ? disabled
+            ? "bg-yellow-100"
+            : "bg-yellow-400 hover:bg-yellow-500 focus-visible:outline-yellow-600"
           : type === "danger"
           ? disabled
             ? "bg-red-100"
@@ -33,7 +53,17 @@ export const Button: React.FC<
       )}
     >
       {!loading ? (
-        children
+        <>
+          {Icon && (
+            <Icon
+              className={classNames(
+                "mr-1",
+                size === "sm" ? "w-3 h-3" : "w-4 h-4"
+              )}
+            />
+          )}
+          {children}
+        </>
       ) : (
         <div
           role="status"

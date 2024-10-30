@@ -2,10 +2,12 @@
 
 import { Alert } from "@/components/alert";
 import { Card } from "@/components/card";
+import { Difficulty } from "@/components/problem/difficulty";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { useProblemService } from "@/lib/problem";
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/16/solid";
+import classNames from "classnames";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
@@ -40,10 +42,10 @@ export const MainProblemsListTable: React.FC = () => {
       <table className="w-full text-left table-auto">
         <thead>
           <tr className="border-b">
-            <th className="p-2 w-12 text-left">状态</th>
-            <th className="p-2 text-left">题号</th>
-            <th className="p-2 text-left">名称</th>
-            <th className="p-2 text-right">难度</th>
+            <th className="p-2 w-[3rem] text-center">状态</th>
+            <th className="p-2 w-[5rem] text-center">题号</th>
+            <th className="p-2 pl-4 text-left">名称</th>
+            <th className="p-2 w-[5rem] text-center">难度</th>
           </tr>
         </thead>
         {!isLoading && (
@@ -59,15 +61,32 @@ export const MainProblemsListTable: React.FC = () => {
             ) : !!problems ? (
               <>
                 {problems.map((problem) => (
-                  <tr key={`${problem.id}-${problem.title}`}>
-                    <td></td>
-                    <td>{problem.id}</td>
-                    <td>
+                  <tr
+                    key={`${problem.id}-${problem.title}`}
+                    className={classNames(
+                      "h-12 border-b border-gray-100",
+                      "hover:bg-gray-100"
+                    )}
+                  >
+                    <td className="p-2 text-center"></td>
+                    <td className="p-2 text-center text-sm font-mono">
+                      P{String(problem.id).padStart(4, "0")}
+                    </td>
+                    <td className="p-2 pl-4">
                       <Link href={`/main/problems/${problem.id}`}>
-                        {problem.title}
+                        <button
+                          className={classNames(
+                            "w-full text-left text-blue-700",
+                            "hover:text-blue-500 hover:underline focus:underline"
+                          )}
+                        >
+                          {problem.title}
+                        </button>
                       </Link>
                     </td>
-                    <td>{problem.difficulty}</td>
+                    <td className="p-2 text-center">
+                      <Difficulty difficulty={problem.difficulty} />
+                    </td>
                   </tr>
                 ))}
               </>
