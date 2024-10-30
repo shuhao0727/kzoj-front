@@ -1,13 +1,13 @@
 "use client";
 
 import { Alert } from "@/components/alert";
+import { Button } from "@/components/button";
 import { Card } from "@/components/card";
 import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { useUserService } from "@/lib/user";
-import classNames from "classnames";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -91,16 +91,14 @@ export const AuthRegisterCard: React.FC = () => {
               className="mt-2"
             />
             <ErrorMessage name="email" component={Error} />
-            <button
-              type="submit"
+            <Button
+              htmlType="submit"
+              type="info"
               disabled={isSubmitting}
-              className={classNames(
-                "w-full mt-4 flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 font-semibold text-white shadow-sm",
-                "hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-              )}
+              loading={isSubmitting}
             >
               登录
-            </button>
+            </Button>
           </Form>
         )}
       </Formik>
