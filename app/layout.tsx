@@ -13,8 +13,10 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const axios = useAxios();
   const userService = useUserService(axios);
 
-  const { data: user, isLoading } = useSWR("/user/self", () =>
-    userService.getSelf()
+  const { data: user, isLoading } = useSWR(
+    "/user/self",
+    () => userService.getSelf(),
+    { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
   return (
