@@ -6,12 +6,14 @@ export const Title: React.FC<
     as: "h1" | "h2" | "h3" | "h4";
     size: "md" | "lg" | "xl" | "2xl" | "3xl";
     bold?: "medium" | "bold" | "semibold";
+    className?: string;
   }>
-> = ({ as, size, bold, children }) => {
+> = ({ as, size, bold, className, children }) => {
   const As = as;
   return (
     <As
       className={classNames(
+        className,
         size === "md"
           ? "text-md"
           : size === "lg"

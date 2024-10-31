@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 
 export const Button: React.FC<
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
-    type?: "info" | "success" | "warning" | "danger";
+    type?: "info" | "success" | "warning" | "danger" | "gray";
     size?: "sm";
     icon?: React.ComponentType<
       React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>
@@ -60,6 +60,12 @@ export const Button: React.FC<
               disabled
                 ? "bg-red-100"
                 : "bg-red-600 hover:bg-red-500 focus-visible:outline-red-600"
+            )
+          : type === "gray"
+          ? classNames(
+              disabled
+                ? "bg-gray-100 text-gray-500"
+                : "bg-gray-100 hover:bg-gray-300 focus-visible:outline-gray-300"
             )
           : "text-gray-900 hover:bg-gray-100 hover:text-gray-500"
       )}
