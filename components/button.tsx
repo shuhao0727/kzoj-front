@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 
 export const Button: React.FC<
   Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
-    type: "info" | "success" | "warning" | "danger";
+    type?: "info" | "success" | "warning" | "danger";
     size?: "sm";
     icon?: React.ComponentType<
       React.PropsWithoutRef<React.SVGProps<SVGSVGElement>>
@@ -31,25 +31,37 @@ export const Button: React.FC<
       className={classNames(
         className,
         size === "sm" ? "text-sm" : "",
-        "w-full flex w-full justify-center items-center rounded-md px-3 py-1.5 font-semibold text-white shadow-sm",
+        "w-full flex w-full justify-center items-center rounded-md px-3 py-1.5 font-semibold",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
         type === "info"
-          ? disabled
-            ? "bg-blue-100"
-            : "bg-blue-600 hover:bg-blue-500 focus-visible:outline-blue-600"
+          ? classNames(
+              "text-white",
+              disabled
+                ? "bg-blue-100"
+                : "bg-blue-600 hover:bg-blue-500 focus-visible:outline-blue-600"
+            )
           : type === "success"
-          ? disabled
-            ? "bg-green-100"
-            : "bg-green-600 hover:bg-green-500 focus-visible:outline-green-600"
+          ? classNames(
+              "text-white",
+              disabled
+                ? "bg-green-100"
+                : "bg-green-600 hover:bg-green-500 focus-visible:outline-green-600"
+            )
           : type === "warning"
-          ? disabled
-            ? "bg-yellow-100"
-            : "bg-yellow-400 hover:bg-yellow-500 focus-visible:outline-yellow-600"
+          ? classNames(
+              "text-white",
+              disabled
+                ? "bg-yellow-100"
+                : "bg-yellow-400 hover:bg-yellow-500 focus-visible:outline-yellow-600"
+            )
           : type === "danger"
-          ? disabled
-            ? "bg-red-100"
-            : "bg-red-600 hover:bg-red-500 focus-visible:outline-red-600"
-          : ""
+          ? classNames(
+              "text-white",
+              disabled
+                ? "bg-red-100"
+                : "bg-red-600 hover:bg-red-500 focus-visible:outline-red-600"
+            )
+          : "text-gray-900 hover:bg-gray-100 hover:text-gray-500"
       )}
     >
       {!loading ? (
@@ -57,8 +69,8 @@ export const Button: React.FC<
           {Icon && (
             <Icon
               className={classNames(
-                "mr-1",
-                size === "sm" ? "w-3 h-3" : "w-4 h-4"
+                size === "sm" ? "w-3 h-3" : "w-4 h-4",
+                !!children ? "mr-1" : ""
               )}
             />
           )}

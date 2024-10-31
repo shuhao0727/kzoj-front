@@ -141,6 +141,10 @@ export class ProblemService {
         utcLastModified: Dayjs(res.data.utcLastModified),
       }));
   };
+
+  queryTotality = (): Promise<number> => {
+    return this.axios.get<number>(`/problem/totality`).then((res) => res.data);
+  };
 }
 
 export const useProblemService = (axios: Axios) => new ProblemService(axios);

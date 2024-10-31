@@ -2,6 +2,7 @@
 
 import { Alert } from "@/components/alert";
 import { Card } from "@/components/card";
+import { Paginate } from "@/components/paginate";
 import { Difficulty } from "@/components/problem/difficulty";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
@@ -13,13 +14,16 @@ import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
 import useSWR from "swr";
 
+const pageName: string = "page";
+const pageSize: number = 20;
+
 export const MainProblemsListTable: React.FC = () => {
   const axios = useAxios();
   const problemService = useProblemService(axios);
   const searchParams = useSearchParams();
 
   const page = useMemo(
-    () => Number.parseInt(searchParams.get("page") ?? "1"),
+    () => Number.parseInt(searchParams.get(pageName) ?? "1"),
     [searchParams]
   );
 
@@ -28,7 +32,7 @@ export const MainProblemsListTable: React.FC = () => {
     error,
     isLoading,
   } = useSWR(["/problems", page], () =>
-    problemService.queryProblemByPage(page, 20)
+    problemService.queryProblemByPage(page, pageSize)
   );
 
   return (
@@ -101,6 +105,13 @@ export const MainProblemsListTable: React.FC = () => {
           </tbody>
         )}
       </table>
+      <Paginate
+        pageName={pageName}
+        pageSize={pageSize}
+        className="mt-4 flex justify-center"
+        totalKey="/problems/total"
+        totalFetcher={() => problemService.queryTotality()}
+      />
     </Card>
   );
 };

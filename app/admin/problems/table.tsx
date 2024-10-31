@@ -3,6 +3,7 @@
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
+import { Paginate } from "@/components/paginate";
 import { Difficulty } from "@/components/problem/difficulty";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
@@ -18,6 +19,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
 import useSWR from "swr";
+
+const pageName: string = "page";
+const pageSize: number = 20;
 
 export const AdminProblemsListTable: React.FC = () => {
   const axios = useAxios();
@@ -139,6 +143,13 @@ export const AdminProblemsListTable: React.FC = () => {
           </tbody>
         )}
       </table>
+      <Paginate
+        pageName={pageName}
+        pageSize={pageSize}
+        className="mt-4 flex justify-center"
+        totalKey="/problems/total"
+        totalFetcher={() => problemService.queryTotality()}
+      />
     </Card>
   );
 };
