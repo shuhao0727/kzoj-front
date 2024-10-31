@@ -12,15 +12,17 @@ const __Textarea: React.FC<
   FieldProps &
     React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
       large?: boolean;
+      monospace?: boolean;
     }
   // eslint-disable-next-line
-> = ({ field, form, meta, large, onBlur, onInput, ...props }) => {
+> = ({ field, form, meta, large, monospace, onBlur, onInput, ...props }) => {
   return (
     <textarea
       {...field}
       {...props}
       className={classNames(
         large ? `min-h-[16rem]` : `min-h-[8rem]`,
+        monospace ? "font-mono" : "",
         "block w-full py-1.5 resize-none rounded-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300",
         "focus:ring-2 focus:ring-inset focus:ring-blue-600"
       )}
@@ -42,6 +44,7 @@ export const Textarea: React.FC<
       label?: string;
       large?: boolean;
       markdown?: boolean;
+      monospace?: boolean;
     }
 > = ({ field, label, large, markdown, className, ...props }) => {
   const html = useMemo(

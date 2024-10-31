@@ -15,7 +15,6 @@ export const AdminCreateProblemCard: React.FC = () => {
 
   const createProblem = useCallback(
     (problem: Omit<Problem, "utcCreated" | "utcLastModified">) => {
-      console.log(problem);
       return problemService
         .createProblem(problem)
         .then((pid) => router.push(`/admin/problems/${pid}`));

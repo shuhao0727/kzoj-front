@@ -24,6 +24,11 @@ export const Difficulties: Record<
   "7": { colorText: "黑", labelText: "省选 / NOI", className: "bg-purple-800" },
 };
 
+export type Example = {
+  input: string;
+  output: string;
+};
+
 export type Problem = {
   id?: number;
   title: string;
@@ -50,6 +55,29 @@ export class ProblemService {
 
   constructor(axios: Axios) {
     this.axios = axios;
+  }
+
+  static encodeExamples(examples: Example[]): string {
+    return examples
+      .map(
+        ({ input, output }) =>
+          `<input>${input}</input><output>${output}</output>`
+      )
+      .join("");
+  }
+
+  static decodeExamples(examples: string): Example[] {
+    try {
+      return examples
+        .split("</output>")
+        .slice(0, -1)
+        .map((s) => {
+          const [s1, s2] = s.split("</input><output>");
+          return { input: s1.substring(7), output: s2 };
+        });
+    } catch (e) {
+      return [{ input: "DECODE_EXAMPLES_FAILED", output: String(e) }];
+    }
   }
 
   createProblem = (
@@ -93,11 +121,15 @@ export class ProblemService {
   };
 
   queryProblemById = (id: number): Promise<Problem> => {
-    return this.axios.get<Problem>(`/problem/get/${id}`).then((res) => ({
-      ...res.data,
-      utcCreated: Dayjs(res.data.utcCreated),
-      utcLastModified: Dayjs(res.data.utcLastModified),
-    }));
+    if (Number.isNaN(id)) {
+      return Promise.reject("PROBLEM_ID_SHOULD_BE_INT");
+    } else {
+      return this.axios.get<Problem>(`/problem/${id}`).then((res) => ({
+        ...res.data,
+        utcCreated: Dayjs(res.data.utcCreated),
+        utcLastModified: Dayjs(res.data.utcLastModified),
+      }));
+    }
   };
 
   queryProblemByTitle = (title: string): Promise<Problem> => {

@@ -8,7 +8,12 @@ import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
 import { Select } from "@/components/form/select";
 import { Textarea } from "@/components/form/textarea";
-import { Difficulties, Difficulty, Problem } from "@/lib/problem";
+import {
+  Difficulties,
+  Difficulty,
+  Problem,
+  ProblemService,
+} from "@/lib/problem";
 import { CheckIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { Field, FieldArray, Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
@@ -25,16 +30,18 @@ export const AdminProblemForm: React.FC<{
   return (
     <Formik
       initialValues={{
-        title: "",
-        description: "",
-        timeLimit: 1000,
-        memoryLimit: 512,
-        inputDescription: "",
-        outputDescription: "",
-        examples: [{ input: "", output: "" }],
-        problemSource: "",
-        difficulty: "1",
-        tip: "",
+        title: problem?.title ?? "",
+        description: problem?.description ?? "",
+        timeLimit: problem?.timeLimit ?? 1000,
+        memoryLimit: problem?.memoryLimit ?? 512,
+        inputDescription: problem?.inputDescription ?? "",
+        outputDescription: problem?.outputDescription ?? "",
+        examples: !!problem
+          ? ProblemService.decodeExamples(problem.examples)
+          : [{ input: "", output: "" }],
+        problemSource: problem?.problemSource ?? "",
+        difficulty: problem?.difficulty ?? "1",
+        tip: problem?.tip ?? "",
       }}
       validationSchema={Yup.object({
         title: Yup.string().required("题目名称不能为空"),
@@ -71,12 +78,7 @@ export const AdminProblemForm: React.FC<{
           stackLimit: values.memoryLimit,
           inputDescription: values.inputDescription,
           outputDescription: values.outputDescription,
-          examples: values.examples
-            .map(
-              ({ input, output }) =>
-                `<input>${input}</input><output>${output}</output>`
-            )
-            .join(""),
+          examples: ProblemService.encodeExamples(values.examples),
           problemSource: values.problemSource,
           difficulty: values.difficulty as Difficulty,
           tip: values.tip,
@@ -152,11 +154,13 @@ export const AdminProblemForm: React.FC<{
                             component={Textarea}
                             name={`examples[${index}].input`}
                             label={`样例${index + 1}输入`}
+                            monospace
                           />
                           <Field
                             component={Textarea}
                             name={`examples[${index}].output`}
                             label={`样例${index + 1}输出`}
+                            monospace
                           />
                         </div>
                         <hr className="my-4" />
