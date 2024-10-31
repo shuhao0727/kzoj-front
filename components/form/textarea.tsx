@@ -3,10 +3,12 @@
 import classNames from "classnames";
 import { FieldProps } from "formik";
 import React, { useMemo } from "react";
-
-import markdownit from "markdown-it";
 import { Error } from "./error";
-const md = markdownit();
+
+import MarkdownKatex from "@vscode/markdown-it-katex";
+import MarkdownIt from "markdown-it";
+const md = MarkdownIt();
+md.use(MarkdownKatex);
 
 const __Textarea: React.FC<
   FieldProps &
@@ -67,7 +69,7 @@ export const Textarea: React.FC<
           </div>
           <div
             className={classNames(
-              "markdown p-4 overflow-auto rounded-md bg-gray-100",
+              "markdown-body p-4 overflow-auto rounded-md bg-gray-100",
               large ? `h-[16rem]` : `h-[8rem]`
             )}
             dangerouslySetInnerHTML={{ __html: html }}

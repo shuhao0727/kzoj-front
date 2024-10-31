@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import "github-markdown-css/github-markdown.css";
+import "katex/dist/katex.css";
 import "./global.css";
 
 import { useAxios } from "@/lib/axios";

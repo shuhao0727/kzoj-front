@@ -8,24 +8,28 @@ import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { config } from "@/lib/config";
 import { ProblemService, useProblemService } from "@/lib/problem";
-import { ArrowUpOnSquareIcon, ClockIcon } from "@heroicons/react/16/solid";
-import MarkdownIt from "markdown-it";
+import {
+  ArchiveBoxIcon,
+  ArrowUpOnSquareIcon,
+  ClockIcon,
+  PencilIcon,
+} from "@heroicons/react/16/solid";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import useSWR from "swr";
 
+import MarkdownKatex from "@vscode/markdown-it-katex";
+import MarkdownIt from "markdown-it";
+import Link from "next/link";
 const md = MarkdownIt();
+md.use(MarkdownKatex);
 
 export const MainProblemDetailCard = () => {
   const axios = useAxios();
   const problemService = useProblemService(axios);
   const params = useParams<{ id: string }>();
 
-  const {
-    data: problem,
-    error,
-    isLoading,
-  } = useSWR(["/problems", params.id], () =>
+  const { data: problem, error } = useSWR(["/problems", params.id], () =>
     problemService.queryProblemById(Number.parseInt(params.id))
   );
   const pid = useMemo(
@@ -60,7 +64,7 @@ export const MainProblemDetailCard = () => {
   return (
     <Card
       title={
-        <Title as="h2" size="2xl">
+        <Title as="h2" size="3xl">
           {!problem ? (
             "题目详情"
           ) : (
@@ -68,8 +72,23 @@ export const MainProblemDetailCard = () => {
               <div className="font-mono text-lg">{pid}</div>
               <div className="flex w-full">
                 <span className="font-bold">{problem.title}</span>
-                <span className="ml-auto inline-flex space-x-2">
-                  {/* 预留管理员按钮 */}
+                <span className="ml-auto inline-flex space-x-4">
+                  <Link
+                    href={`#`}
+                    target="_blank"
+                    className="inline-flex items-center text-base text-blue-600"
+                  >
+                    <ArchiveBoxIcon className="w-4 h-4 mr-1" />
+                    提交列表
+                  </Link>
+                  <Link
+                    href={`/admin/problems/${problem.id}`}
+                    target="_blank"
+                    className="inline-flex items-center text-base text-red-600"
+                  >
+                    <PencilIcon className="w-4 h-4 mr-1" />
+                    编辑题目
+                  </Link>
                 </span>
               </div>
             </>
@@ -85,19 +104,28 @@ export const MainProblemDetailCard = () => {
               <Title as="h3" size="xl" bold="semibold" className="mb-2 -ml-4">
                 【题目描述】
               </Title>
-              <div dangerouslySetInnerHTML={{ __html: descHtml }} />
+              <div
+                className="markdown-body"
+                dangerouslySetInnerHTML={{ __html: descHtml }}
+              />
             </div>
             <div id="problem-input-format">
               <Title as="h3" size="xl" bold="semibold" className="mb-2 -ml-4">
                 【输入格式】
               </Title>
-              <div dangerouslySetInnerHTML={{ __html: inputHtml }} />
+              <div
+                className="markdown-body"
+                dangerouslySetInnerHTML={{ __html: inputHtml }}
+              />
             </div>
             <div id="problem-output-format">
               <Title as="h3" size="xl" bold="semibold" className="mb-2 -ml-4">
                 【输出格式】
               </Title>
-              <div dangerouslySetInnerHTML={{ __html: outputHtml }} />
+              <div
+                className="markdown-body"
+                dangerouslySetInnerHTML={{ __html: outputHtml }}
+              />
             </div>
             <div id="problem-examples">
               <Title as="h3" size="xl" bold="semibold" className="mb-2 -ml-4">
@@ -133,7 +161,10 @@ export const MainProblemDetailCard = () => {
                 <Title as="h3" size="xl" bold="semibold" className="mb-2 -ml-4">
                   【提示】
                 </Title>
-                <div dangerouslySetInnerHTML={{ __html: tipHtml }} />
+                <div
+                  className="markdown-body"
+                  dangerouslySetInnerHTML={{ __html: tipHtml }}
+                />
               </div>
             )}
             {problem.problemSource && (
