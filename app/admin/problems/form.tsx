@@ -1,6 +1,5 @@
 "use client";
 
-import { UserContext } from "@/app/context";
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/button";
 import { Card } from "@/components/card";
@@ -8,15 +7,17 @@ import { Error } from "@/components/form/error";
 import { Input } from "@/components/form/input";
 import { Select } from "@/components/form/select";
 import { Textarea } from "@/components/form/textarea";
+import { useAppSelector } from "@/lib/hooks";
 import {
   Difficulties,
   Difficulty,
   Problem,
   ProblemService,
 } from "@/lib/problem";
+import { selectUser } from "@/lib/states/auth";
 import { CheckIcon, PlusIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { Field, FieldArray, Form, Formik } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 
 export const AdminProblemForm: React.FC<{
@@ -25,7 +26,7 @@ export const AdminProblemForm: React.FC<{
     problem: Omit<Problem, "utcCreated" | "utcLastModified">
   ) => Promise<void>;
 }> = ({ problem, onSubmit }) => {
-  const user = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const [error, setError] = useState<string>();
   return (
     <Formik

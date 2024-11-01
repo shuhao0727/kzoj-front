@@ -2,14 +2,15 @@
 
 import { useAxios } from "@/lib/axios";
 import { config } from "@/lib/config";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { logout, selectUser } from "@/lib/states/auth";
 import { useUserService } from "@/lib/user";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/16/solid";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useCallback, useContext } from "react";
-import { UserContext } from "../context";
+import React, { useCallback } from "react";
 
 type Item = { name: string; href: string; target?: string };
 
@@ -26,13 +27,17 @@ const items: Item[] = [
 export const Header: React.FC = () => {
   const axios = useAxios();
   const userService = useUserService(axios);
-  const user = useContext(UserContext);
+  const currentUser = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
 
-  const logout = useCallback(() => {
-    userService.logout().then(() => router.push("/auth/login?error=logout"));
-  }, [userService, router]);
+  const handleLogout = useCallback(() => {
+    userService.logout().then(() => {
+      dispatch(logout());
+      router.push("/auth/login?error=logout");
+    });
+  }, [userService, router, dispatch]);
 
   return (
     <nav className="w-full bg-gray-800">
@@ -62,7 +67,9 @@ export const Header: React.FC = () => {
               <MenuButton className="inline-flex items-center rounded-md px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
                 <UserIcon className="h-4 w-4" />
                 <span className="ml-2">
-                  {!!user ? `${user.username} ${user.realName}` : "未登录"}
+                  {!!currentUser
+                    ? `${currentUser.username} ${currentUser.realName}`
+                    : "未登录"}
                 </span>
               </MenuButton>
             </div>
@@ -84,7 +91,7 @@ export const Header: React.FC = () => {
                   <button
                     type="submit"
                     className="block w-full px-4 py-2 text-left text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
-                    onClick={() => logout()}
+                    onClick={() => handleLogout()}
                   >
                     退出登录
                   </button>

@@ -3,12 +3,13 @@
 import { Alert } from "@/components/alert";
 import { Title } from "@/components/title";
 import { config } from "@/lib/config";
+import { useAppSelector } from "@/lib/hooks";
+import { selectUser } from "@/lib/states/auth";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useContext, useEffect } from "react";
-import { UserContext } from "../context";
+import React, { useEffect } from "react";
 
 const AuthLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const user = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const router = useRouter();
   const searchParams = useSearchParams();
 

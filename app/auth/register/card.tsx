@@ -6,6 +6,8 @@ import { Card } from "@/components/card";
 import { Input } from "@/components/form/input";
 import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
+import { useAppDispatch } from "@/lib/hooks";
+import { login } from "@/lib/states/auth";
 import { useUserService } from "@/lib/user";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
@@ -16,6 +18,7 @@ import * as Yup from "yup";
 export const AuthRegisterCard: React.FC = () => {
   const axios = useAxios();
   const userService = useUserService(axios);
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [error, setError] = useState<string>();
@@ -57,7 +60,10 @@ export const AuthRegisterCard: React.FC = () => {
               },
               values.password
             )
-            .then(() => router.push("/main/index"))
+            .then((user) => {
+              dispatch(login(user));
+              router.push("/main/index");
+            })
             .catch((error) => setError(String(error)))
             .finally(() => setSubmitting(false));
         }}

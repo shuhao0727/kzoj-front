@@ -1,13 +1,14 @@
 "use client";
 
+import { useAppSelector } from "@/lib/hooks";
+import { selectUser } from "@/lib/states/auth";
 import { usePathname, useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
-import { UserContext } from "../context";
+import { useEffect } from "react";
 import { Footer } from "./footer";
 import { Header } from "./header";
 
 const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const user = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const router = useRouter();
   const pathname = usePathname();
 

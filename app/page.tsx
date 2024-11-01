@@ -1,11 +1,12 @@
 "use client";
 
+import { useAppSelector } from "@/lib/hooks";
+import { selectUser } from "@/lib/states/auth";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
-import { UserContext } from "./context";
+import React, { useEffect } from "react";
 
 const IndexPage: React.FC = () => {
-  const user = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const IndexPage: React.FC = () => {
     }
   }, [user, router]);
 
-  return "";
+  return <div className="flex-grow bg-gray-50" />;
 };
 
 export default IndexPage;
