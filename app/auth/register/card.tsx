@@ -11,7 +11,6 @@ import { login } from "@/lib/states/auth";
 import { useUserService } from "@/lib/user";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as Yup from "yup";
 
@@ -19,7 +18,6 @@ export const AuthRegisterCard: React.FC = () => {
   const axios = useAxios();
   const userService = useUserService(axios);
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
   const [error, setError] = useState<string>();
 
@@ -60,10 +58,7 @@ export const AuthRegisterCard: React.FC = () => {
               },
               values.password
             )
-            .then((user) => {
-              dispatch(login(user));
-              router.push("/main/index");
-            })
+            .then((user) => dispatch(login(user)))
             .catch((error) => setError(String(error)))
             .finally(() => setSubmitting(false));
         }}

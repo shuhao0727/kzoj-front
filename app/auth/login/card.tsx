@@ -12,22 +12,15 @@ import { login } from "@/lib/states/auth";
 import { useUserService } from "@/lib/user";
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 
 export const AuthLoginCard: React.FC = () => {
   const axios = useAxios();
   const userService = useUserService(axios);
   const dispatch = useAppDispatch();
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [error, setError] = useState<string>();
-  const redirect = useMemo(
-    () => searchParams.get("redirect") ?? "/main/index",
-    [searchParams]
-  );
 
   return (
     <Card>
@@ -57,10 +50,7 @@ export const AuthLoginCard: React.FC = () => {
           setSubmitting(true);
           userService
             .login(values.username, values.password)
-            .then((user) => {
-              dispatch(login(user));
-              router.push(redirect);
-            })
+            .then((user) => dispatch(login(user)))
             .catch((error) => setError(String(error)))
             .finally(() => setSubmitting(false));
         }}

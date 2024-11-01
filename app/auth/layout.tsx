@@ -6,18 +6,22 @@ import { config } from "@/lib/config";
 import { useAppSelector } from "@/lib/hooks";
 import { selectUser } from "@/lib/states/auth";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 const AuthLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const redirect = useMemo(
+    () => searchParams.get("redirect") ?? "/",
+    [searchParams]
+  );
 
   useEffect(() => {
     if (!!user) {
-      router.push(`/main/index`);
+      router.push(redirect);
     }
-  }, [user, router]);
+  }, [user, router, redirect]);
 
   return (
     <div className="flex flex-col bg-gray-100 items-center min-h-[100vh]">
