@@ -6,10 +6,11 @@ import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { login, logout, selectUser } from "@/lib/states/auth";
-import { store } from "@/lib/store";
+import { persistor, store } from "@/lib/store";
 import { useUserService } from "@/lib/user";
 import React from "react";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import useSWR from "swr";
 
 export const ReduxAwareApp: React.FC<React.PropsWithChildren> = ({
@@ -72,6 +73,11 @@ export const Application: React.FC<React.PropsWithChildren> = ({
   children,
 }) => (
   <Provider store={store}>
-    <ReduxAwareApp>{children}</ReduxAwareApp>
+    <PersistGate
+      loading={<div className="flex-grow bg-gray-50" />}
+      persistor={persistor}
+    >
+      <ReduxAwareApp>{children}</ReduxAwareApp>
+    </PersistGate>
   </Provider>
 );
