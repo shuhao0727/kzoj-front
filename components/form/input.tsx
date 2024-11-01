@@ -5,7 +5,6 @@ import { Error } from "./error";
 
 export const Input: React.FC<
   FieldProps & React.InputHTMLAttributes<HTMLInputElement> & { label?: string }
-  // eslint-disable-next-line
 > = ({ field, form, meta, label, className, onBlur, onInput, ...props }) => {
   return (
     <div className={className}>

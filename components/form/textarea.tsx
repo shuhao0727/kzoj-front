@@ -16,7 +16,6 @@ const __Textarea: React.FC<
       large?: boolean;
       monospace?: boolean;
     }
-  // eslint-disable-next-line
 > = ({ field, form, meta, large, monospace, onBlur, onInput, ...props }) => {
   return (
     <textarea

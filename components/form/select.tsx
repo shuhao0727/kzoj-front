@@ -11,7 +11,6 @@ export const Select: React.FC<
 > = ({
   field,
   form,
-  // eslint-disable-next-line
   meta,
   label,
   className,
