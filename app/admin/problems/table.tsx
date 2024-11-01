@@ -74,7 +74,7 @@ export const AdminProblemsListTable: React.FC = () => {
           <tbody>
             {!!error ? (
               <tr>
-                <td colSpan={4}>
+                <td colSpan={6}>
                   <Alert type="error" title="加载题目失败">
                     <p>{String(error)}</p>
                   </Alert>
