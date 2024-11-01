@@ -8,10 +8,10 @@ export const Select: React.FC<
     FieldProps &
       React.SelectHTMLAttributes<HTMLSelectElement> & { label?: string }
   >
-  // eslint-disable-next-line
 > = ({
   field,
   form,
+  // eslint-disable-next-line
   meta,
   label,
   className,

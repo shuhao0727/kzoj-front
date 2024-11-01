@@ -45,7 +45,7 @@ export const Paginate: React.FC<{
       params.set(__pageName, String(event.selected + 1));
       router.push(`${pathname}?${params.toString()}`);
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams, __pageName]
   );
 
   return (

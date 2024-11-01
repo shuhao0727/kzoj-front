@@ -6,7 +6,7 @@ import { Title } from "@/components/title";
 import { useAxios } from "@/lib/axios";
 import { config } from "@/lib/config";
 import { Problem, useProblemService } from "@/lib/problem";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import React, { useCallback, useEffect } from "react";
 import useSWR, { mutate } from "swr";
 import { AdminProblemForm } from "../form";
@@ -14,7 +14,6 @@ import { AdminProblemForm } from "../form";
 export const AdminUpdateProblemCard: React.FC = () => {
   const axios = useAxios();
   const problemService = useProblemService(axios);
-  const router = useRouter();
   const params = useParams<{ id: string }>();
 
   const {
@@ -40,7 +39,7 @@ export const AdminUpdateProblemCard: React.FC = () => {
         })
       );
     },
-    [problemService, router]
+    [problemService, params]
   );
 
   return (
