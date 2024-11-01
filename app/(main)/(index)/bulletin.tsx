@@ -4,7 +4,7 @@ import { Card } from "@/components/card";
 import { Title } from "@/components/title";
 import React from "react";
 
-export const MainIndexBulletin: React.FC = () => {
+export const IndexBulletin: React.FC = () => {
   return (
     <Card
       title={

@@ -94,7 +94,7 @@ export const AdminProblemsListTable: React.FC = () => {
                       P{String(problem.id).padStart(4, "0")}
                     </td>
                     <td className="p-2 pl-4">
-                      <Link href={`/main/problems/${problem.id}`}>
+                      <Link href={`/problems/${problem.id}`}>
                         <button
                           className={classNames(
                             "w-full text-left text-blue-700",

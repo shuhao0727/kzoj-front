@@ -15,8 +15,8 @@ import React, { useCallback } from "react";
 type Item = { name: string; href: string; target?: string };
 
 const items: Item[] = [
-  { name: "首页", href: "/main/index" },
-  { name: "题目", href: "/main/problems" },
+  { name: "首页", href: "/" },
+  { name: "题目", href: "/problems" },
   // { name: "训练", href: "/training" },
   // { name: "比赛", href: "/contest" },
   // { name: "测评", href: "/judge" },

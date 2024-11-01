@@ -24,7 +24,7 @@ import Link from "next/link";
 const md = MarkdownIt();
 md.use(MarkdownKatex);
 
-export const MainProblemDetailCard = () => {
+export const ProblemDetailCard = () => {
   const axios = useAxios();
   const problemService = useProblemService(axios);
   const params = useParams<{ id: string }>();

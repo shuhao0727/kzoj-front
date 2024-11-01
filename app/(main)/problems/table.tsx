@@ -17,7 +17,7 @@ import useSWR from "swr";
 const pageName: string = "page";
 const pageSize: number = 20;
 
-export const MainProblemsListTable: React.FC = () => {
+export const ProblemsListTable: React.FC = () => {
   const axios = useAxios();
   const problemService = useProblemService(axios);
   const searchParams = useSearchParams();
@@ -77,7 +77,7 @@ export const MainProblemsListTable: React.FC = () => {
                       P{String(problem.id).padStart(4, "0")}
                     </td>
                     <td className="p-2 pl-4">
-                      <Link href={`/main/problems/${problem.id}`}>
+                      <Link href={`/problems/${problem.id}`}>
                         <button
                           className={classNames(
                             "w-full text-left text-blue-700",

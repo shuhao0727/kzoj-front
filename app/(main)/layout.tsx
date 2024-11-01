@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { Footer } from "./footer";
 import { Header } from "./header";
 
-const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+export default function MainLayout({ children }: React.PropsWithChildren) {
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const pathname = usePathname();
@@ -20,15 +20,19 @@ const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <Header />
-      <main className="pb-12 flex-grow bg-gray-50">
-        <div className="container max-w-6xl mx-auto my-6 space-y-12">
-          {children}
-        </div>
-      </main>
-      <Footer />
+      {!user ? (
+        <div className="flex-grow bg-gray-50" />
+      ) : (
+        <>
+          <Header />
+          <main className="pb-12 flex-grow bg-gray-50">
+            <div className="container max-w-6xl mx-auto my-6 space-y-12">
+              {children}
+            </div>
+          </main>
+          <Footer />
+        </>
+      )}
     </>
   );
-};
-
-export default MainLayout;
+}
